@@ -1,10 +1,11 @@
 import datetime
 import sqlalchemy
 from sqlalchemy import orm
+from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 
 
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -19,4 +20,3 @@ class User(SqlAlchemyBase):
                                      default=datetime.datetime.now)
     customchannel = orm.relationship("Customchannel", uselist=False, back_populates="users")
     authorchannel = orm.relationship("Authorchannel", uselist=False, back_populates="users")
-
