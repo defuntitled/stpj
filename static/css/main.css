@@ -2038,8 +2038,7 @@ button,
     display: inline-block;
     background: #df7366;
     color: #fff;
-    margin
-    text-align: center;
+    margin text-align: center;
     border-radius: 0.5em;
     text-decoration: none;
     padding: 0.65em 3em 0.65em 3em;
@@ -3147,3 +3146,5 @@ body.homepage.is-preload #header:after {
     }
 
 }
+
+
