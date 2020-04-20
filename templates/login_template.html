@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <!-- Login -->
+            <div class="login-form">
+                <form method="post">
+                    <div class="row" id='login-header'>Sign In</div>
+
+                    <p> <input type='email' placeholder="Email"></p>
+                    <p>
+                        <input type="password" placeholder="Password"></p>
+                    <p><input type="submit" value="Log in" id='button'></p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

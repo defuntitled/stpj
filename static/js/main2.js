@@ -3,6 +3,8 @@ $(document).ready(function () {
     var r = 150;
     var g = 0;
     var b = 0;
+    $('#navbar-in').css('transform', 'rotate(360deg)');
+
 
     function changeColor() {
         if (r > 230) {
@@ -21,6 +23,7 @@ $(document).ready(function () {
         $('#navbar-in img').css('background-color', color);
         if (getvalue > 100000) {
             getvalue = 0;
+
         }
     }
 
