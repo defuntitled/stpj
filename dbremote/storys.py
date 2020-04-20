@@ -9,6 +9,7 @@ class Story(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    channel_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("authorchannels.id"))
-    channel = orm.relationship("Authorchannel", back_populates="stories")
+    user_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                sqlalchemy.ForeignKey("authors.id"))
+    user = orm.relation('Author')
     template_path = sqlalchemy.Column(sqlalchemy.String, nullable=True)

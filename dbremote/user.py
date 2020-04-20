@@ -4,6 +4,13 @@ from sqlalchemy import orm
 from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 
+follow_table = sqlalchemy.Table('association', SqlAlchemyBase.metadata,
+                                sqlalchemy.Column('user_id', sqlalchemy.Integer,
+                                                  sqlalchemy.ForeignKey('user.id')),
+                                sqlalchemy.Column('author_id', sqlalchemy.Integer,
+                                                  sqlalchemy.ForeignKey('author.id'))
+                                )
+
 
 class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
@@ -11,12 +18,27 @@ class User(SqlAlchemyBase, UserMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     nickname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    author = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     journalist = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String,
                               index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-    customchannel = orm.relationship("Customchannel", uselist=False, back_populates="users")
-    authorchannel = orm.relationship("Authorchannel", uselist=False, back_populates="users")
+
+
+followed = orm.relation("Author", secondary=follow_table)
+
+
+class Author(SqlAlchemyBase, UserMixin):
+    __tablename__ = 'authors'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer,
+                           primary_key=True, autoincrement=True)
+    nickname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    journalist = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
+    email = sqlalchemy.Column(sqlalchemy.String,
+                              index=True, unique=True, nullable=True)
+    hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    created_date = sqlalchemy.Column(sqlalchemy.DateTime,
+                                     default=datetime.datetime.now)
+    stories = orm.relation("Story", back_populates='authors')
