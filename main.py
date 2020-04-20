@@ -1,6 +1,5 @@
 from dbremote import db_session
-from flask import Flask
-from flask_restful import Api
+from flask import Flask, render_template
 import rsa
 
 app = Flask(__name__)
@@ -11,6 +10,11 @@ api = Api(app)
 def main():
     db_session.global_init("db/data.sqlite")
     return 0
+
+
+@app.route("/")
+def main_page():
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
