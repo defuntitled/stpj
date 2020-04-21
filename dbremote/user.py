@@ -4,7 +4,7 @@ from sqlalchemy import orm
 from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 
-follow_table = sqlalchemy.Table('association', SqlAlchemyBase.metadata,
+follow_table = sqlalchemy.Table('followers', SqlAlchemyBase.metadata,
                                 sqlalchemy.Column('user_id', sqlalchemy.Integer,
                                                   sqlalchemy.ForeignKey('users.id')),
                                 sqlalchemy.Column('author_id', sqlalchemy.Integer,

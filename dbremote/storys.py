@@ -3,12 +3,11 @@ import sqlalchemy
 from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
 
-comment_table = sqlalchemy.Table('association', SqlAlchemyBase.metadata,
+comment_table = sqlalchemy.Table('comments_follow', SqlAlchemyBase.metadata,
                                  sqlalchemy.Column('story_id', sqlalchemy.Integer,
                                                    sqlalchemy.ForeignKey('stories.id')),
                                  sqlalchemy.Column('comment_id', sqlalchemy.Integer,
-                                                   sqlalchemy.ForeignKey('comments.id'))
-                                 )
+                                                   sqlalchemy.ForeignKey('comments.id'),))
 
 
 class Story(SqlAlchemyBase):

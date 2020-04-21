@@ -3,24 +3,19 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
-from dbremote.db_session import create_session
+from dbremote.db_session import create_session,global_init
 from dbremote.user import User, Author
 from main import app
 import flask
 from werkzeug.security import generate_password_hash
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+global_init("db/data.sqlite")
 session = create_session()
 
 blueprint = flask.Blueprint('news_api', __name__,
                             template_folder='templates')
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    global session
-    return session.query(User).get(user_id)
 
 
 class LoginForm(FlaskForm):
@@ -51,7 +46,7 @@ class RegistrationForm(FlaskForm):
 
 @blueprint.route("/login", methods=["GET", "POST"])
 def login():
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         return flask.redirect("/feed")
     form = LoginForm()
     if form.validate_on_submit():
@@ -62,13 +57,13 @@ def login():
         return flask.render_template('login.html',
                                      message="Неправильный логин или пароль",
                                      form=form)
-    return flask.render_template('login.html', title='Авторизация', form=form)
+    return flask.render_template('login_template.html', title='Авторизация', form=form)
 
 
 @blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return flask.redirect("feed")
+        return flask.redirect("/feed")
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(nickname=form.username.data, email=form.email.data,
@@ -77,7 +72,7 @@ def register():
         session.add(user)
         session.commit()
         return flask.redirect("/login")
-    return flask.render_template('register.html', title='Register', form=form)
+    return flask.render_template('registration_user.html', title='Register', form=form)
 
 
 @blueprint.route("/register_author")
