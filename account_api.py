@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
-from dbremote.db_session import create_session,global_init
+from dbremote.db_session import create_session, global_init
 from dbremote.user import User, Author
 from main import app
 import flask
@@ -14,8 +14,6 @@ session = create_session()
 
 blueprint = flask.Blueprint('news_api', __name__,
                             template_folder='templates')
-
-
 
 
 class LoginForm(FlaskForm):
@@ -32,16 +30,6 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different username.')
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different email address.')
 
 
 @blueprint.route("/login", methods=["GET", "POST"])
@@ -72,18 +60,21 @@ def register():
         session.add(user)
         session.commit()
         return flask.redirect("/login")
-    return flask.render_template('registration_user.html', title='Register', form=form)
+    return flask.render_template('registration_creator.html', title='Register', form=form)
 
 
 @blueprint.route("/register_author")
 def new_author():
-    author = Author(id=current_user.id, nickname=current_user.nickname, email=current_user.email,
-                    hashed_password=current_user.hashed_password)
-    user = session.query(User).filter(User.id == current_user.id)
-    user.author = True
+    form = RegistrationForm()
+
+    author = Author(nickname=form.username.data,
+                    email=form.email.data,
+                    hashed_password=generate_password_hash(form.password.data))
+    print(author)
     session.add(author)
     session.commit()
-    return flask.redirect("/dashboard")
+    return flask.redirect("/login")
+    return flask.render_template('registration_creator.html', title='Register', form=form)
 
 
 @blueprint.route("/logout")

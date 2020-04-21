@@ -31,7 +31,7 @@ class Author(SqlAlchemyBase, UserMixin):
     __tablename__ = 'authors'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
-                           primary_key=True, autoincrement=False)
+                           primary_key=True, autoincrement=True)
     nickname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String,
                               index=True, unique=True, nullable=True)
