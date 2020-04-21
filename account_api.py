@@ -66,14 +66,15 @@ def register():
 @blueprint.route("/register_author")
 def new_author():
     form = RegistrationForm()
-
-    author = Author(nickname=form.username.data,
-                    email=form.email.data,
-                    hashed_password=generate_password_hash(form.password.data))
-    print(author)
-    session.add(author)
-    session.commit()
-    return flask.redirect("/login")
+    if form.validate_on_submit():
+        author = Author(nickname=form.username.data,
+                        email=form.email.data,
+                        hashed_password=generate_password_hash(form.password.data))
+        session.add(author)
+        session.commit()
+        return flask.redirect("/login")
+    else:
+        print(form.errors)
     return flask.render_template('registration_creator.html', title='Register', form=form)
 
 
