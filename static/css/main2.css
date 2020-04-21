@@ -397,12 +397,44 @@ form input {
     margin-top: -10px;
     margin-bottom: 10%;
     min-height: 10%;
-    background-color:#57b846;
+    background-color: #57b846;
     border-radius: 20px 20px 0 0;
     font-weight: 700;
     font: 'Yanone Kaffeesatz', sans-serif;
 }
-#button:hover{
+
+#button:hover {
     transition: 0.5s;
     background-color: #57b846;
+}
+
+#registration {
+    max-width: 50%;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    font-family:'Yanone Kaffeesatz', sans-serif;
+    border-radius: 5px;
+}
+
+#registration span{
+    justify-content: center;
+    margin: 0 auto;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+#reg-header {
+    justify-content: center;
+    padding: 10%;
+    min-height: 10%;
+    background-color: #57b846;
+    border-radius: 5px 5px 0 0;
+    font-weight: 500;
+    font: 'Yanone Kaffeesatz', sans-serif;
+    color: darkblue;
+}
+#registration div{
+    margin: 20px;
 }

@@ -4,6 +4,11 @@ $(document).ready(function () {
     var g = 0;
     var b = 0;
     $('#navbar-in').css('transform', 'rotate(360deg)');
+    $('#button-reg').on('click', function(){
+        $(this).text('Your link is waiting for you at ЭЛЕКТРОМЫЛО');
+    });
+
+
 
 
     function changeColor() {
