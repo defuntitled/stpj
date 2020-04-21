@@ -45,6 +45,8 @@ def login():
         return flask.render_template('login.html',
                                      message="Неправильный логин или пароль",
                                      form=form)
+    else:
+        print(form.errors)
     return flask.render_template('login_template.html', title='Авторизация', form=form)
 
 
@@ -63,10 +65,10 @@ def register():
     return flask.render_template('registration_creator.html', title='Register', form=form)
 
 
-@blueprint.route("/register_author")
+@blueprint.route("/register_author", methods=['GET', 'POST'])
 def new_author():
     form = RegistrationForm()
-    if form.validate_on_submit():
+    if form.validate():
         author = Author(nickname=form.username.data,
                         email=form.email.data,
                         hashed_password=generate_password_hash(form.password.data))
