@@ -1,5 +1,5 @@
 from dbremote import db_session
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 import account_api
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.user import User, Author
@@ -25,6 +25,8 @@ def main():
 
 @app.route("/")
 def main_page():
+    if current_user.is_authenticated:
+        return redirect("/feed")
     return render_template("index.html")
 
 
