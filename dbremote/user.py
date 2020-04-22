@@ -23,8 +23,7 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-    author = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
-    followed = orm.relation("Author", secondary=follow_table)
+    followed = orm.relationship("Author", secondary=follow_table)
 
 
 class Author(SqlAlchemyBase, UserMixin):
@@ -38,4 +37,4 @@ class Author(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-    stories = orm.relation("Story", back_populates='authors')
+    stories = orm.relationship("Story", back_populates='author')
