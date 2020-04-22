@@ -19,7 +19,7 @@ def load_user(user_id):
 def main():
     db_session.global_init("db/data.sqlite")
     app.register_blueprint(account_api.blueprint)
-    app.run(port=8080, host='127.0.0.1')
+    app.run(port=8080, host='127.0.0.1', debug=True)
     return 0
 
 
