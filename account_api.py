@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
 from dbremote.user import User, Author
-from main import app
+from flask import request
 import flask
 from werkzeug.security import generate_password_hash
 
@@ -25,11 +25,11 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('ЭЛЕКТРОМЫЛО', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+    submit = SubmitField('Done!')
 
 
 @blueprint.route("/login", methods=["GET", "POST"])
@@ -56,6 +56,9 @@ def register():
         return flask.redirect("/feed")
     form = RegistrationForm()
     if form.validate_on_submit():
+        print(form.username.data)
+        print(form.email.data)
+        print(form.password.data)
         user = User(nickname=form.username.data, email=form.email.data,
                     hashed_password=generate_password_hash(form.password.data))
         # добавить проверку email

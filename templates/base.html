@@ -5,7 +5,7 @@
     <title>stories.ua.kz.ru</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="static/css/main2.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main2.css') }}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/f755b64f54.js" crossorigin="anonymous"></script>
     <!-- <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript> -->
@@ -14,7 +14,7 @@
 <body class="homepage is-preload">
     <!-- NAVBAR -->
     <nav class="navbar navbar-light" id='navbar-nav'>
-        <div class="navbar-in" id='navbar-in'>STO <a href="index.html"><img src="https://img.icons8.com/nolan/64/r.png"></a>IES.RU</div>
+        <div class="navbar-in" id='navbar-in'>STO <a href="/"><img src="https://img.icons8.com/nolan/64/r.png"></a>IES.RU</div>
     </nav>
     {% block content %}{% endblock %}
 
@@ -45,8 +45,8 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="static/js/jquery.min.js"></script>
-    <script src="static/js/main2.js"></script>
+    <script src="{{ url_for('static', filename='/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/main2.js') }}"></script>
 </body>
 
 </html>
