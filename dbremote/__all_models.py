@@ -1,2 +1,2 @@
-from .user import User
-from .storys import Story
+from . import user
+from . import storys
