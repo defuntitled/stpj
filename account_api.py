@@ -22,10 +22,10 @@ blueprint = flask.Blueprint('news_api', __name__,
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня')
-    submit = SubmitField('Войти')
+    email = StringField('ЭЛЕКТРОМЫЛО', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Keep me in')
+    submit = SubmitField('Log in')
 
 
 class RegistrationForm(FlaskForm):

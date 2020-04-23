@@ -9,10 +9,21 @@
                 <form method="post">
                     <div class="row" id='login-header'>Sign In</div>
 
-                    <p> <input type='email' placeholder="Email" id='reg-email'></p>
-                    <p>
-                        <input type="password" placeholder="Password"></p>
-                    <p><input type="submit" value="Log in" id='button'></p>
+                    <p>{{ form.email(type='email', placeholder="ЭЛЕКТРОМЫЛО", id='reg-email') }}</p>
+                    {% for error in form.email.errors %}
+                    <p style="color: red;">[{{ error }}]</p>
+                    {% endfor %}
+                    <p>{{ form.password(type="password", placeholder="Password") }}</p>
+                    <div class="row" style="align-items: center; margin-bottom:5%; margin-top:5%;">
+                        <div class="col-4" style="align-items: center;">
+                            {{ form.remember_me() }}
+                        </div>
+                        <div class="col" style="align-items: center;">
+                            <span style="font-weight:700;">Keep me signed </span>
+                        </div>
+                    </div>
+
+                    <p>{{ form.submit(type="submit", value="Log in",id='button') }}</p>
                     <p style="text-align: center;"><a href="/register">I haven't registered yet</a></p>
                 </form>
             </div>
