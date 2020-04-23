@@ -65,7 +65,7 @@ def login():
                                      form=form)
     else:
         print(form.errors)
-    return flask.render_template('login_template.html', title='Авторизация', form=form)
+    return flask.render_template('login_template.html', action=2, title='Авторизация', form=form)
 
 
 @blueprint.route("/login_author", methods=["GET", "POST"])
@@ -82,7 +82,7 @@ def login_author():
                                      form=form)
     else:
         print(form.errors)
-    return flask.render_template('login_template.html', form=form)
+    return flask.render_template('login_template.html', action=1, form=form)
 
 
 @blueprint.route('/register', methods=['GET', 'POST'])
@@ -106,7 +106,7 @@ def register():
               type(generate_password_hash(form.password.data)))
         session.commit()
         return flask.redirect("/login")
-    return flask.render_template('registration_creator.html', title='Register', form=form)
+    return flask.render_template('registration_creator.html', action=2, title='Register', form=form)
 
 
 @blueprint.route("/register_author", methods=['GET', 'POST'])
@@ -124,7 +124,7 @@ def new_author():
         return flask.redirect("/login")
     else:
         print(form.errors)
-    return flask.render_template('registration_creator.html', title='Register', form=form)
+    return flask.render_template('registration_creator.html', action=1, form=form)
 
 
 @blueprint.route("/logout")
