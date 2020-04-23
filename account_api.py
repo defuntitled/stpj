@@ -56,15 +56,16 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = session.query(User).filter(User.email == form.email.data).first()
-        if user and user.check_password(generate_password_hash(form.password.data)):
+        if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return flask.redirect("/")
-        return flask.render_template('login.html',
+        print(generate_password_hash(form.password.data))
+        return flask.render_template('login_template.html',
                                      message="Неправильный логин или пароль",
                                      form=form)
     else:
         print(form.errors)
-    return flask.render_template('login_template.html', title='Авторизация', form=form)
+    return flask.render_template('login_template.html', action=2, title='Авторизация', form=form)
 
 
 @blueprint.route("/login_author", methods=["GET", "POST"])
@@ -74,14 +75,14 @@ def login_author():
     form = LoginForm()
     if form.validate_on_submit():
         author = session.query(Author).filter(Author.email == form.email.data).first()
-        if author and author.check_password(generate_password_hash(form.password.data)):
+        if author and author.check_password(form.password.data):
             login_user(author, remember=form.remember_me.data)
             return flask.redirect("/dashboard")
-        return flask.render_template('login.html',
+        return flask.render_template('login_template.html',
                                      form=form)
     else:
         print(form.errors)
-    return flask.render_template('login_template.html', form=form)
+    return flask.render_template('login_template.html', action=1, form=form)
 
 
 @blueprint.route('/register', methods=['GET', 'POST'])
@@ -105,7 +106,7 @@ def register():
               type(generate_password_hash(form.password.data)))
         session.commit()
         return flask.redirect("/login")
-    return flask.render_template('registration_creator.html', title='Register', form=form)
+    return flask.render_template('registration_creator.html', action=2, title='Register', form=form)
 
 
 @blueprint.route("/register_author", methods=['GET', 'POST'])
@@ -123,7 +124,7 @@ def new_author():
         return flask.redirect("/login")
     else:
         print(form.errors)
-    return flask.render_template('registration_creator.html', title='Register', form=form)
+    return flask.render_template('registration_creator.html', action=1, form=form)
 
 
 @blueprint.route("/logout")

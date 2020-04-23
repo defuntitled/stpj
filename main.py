@@ -12,7 +12,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    global session
+    session = db_session.create_session()
     return session.query(User).get(user_id)
 
 
