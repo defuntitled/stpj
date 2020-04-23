@@ -5,7 +5,10 @@
     <form class="card card-block m-x-auto bg-faded form-width" method="post">
         {{ form.hidden_tag() }}
 
+
         <legend class="m-b-1 text-xs-center" id='reg-header'>Creator registration</legend>
+        <div class="text-xs-center"><a href="/login" class="btn btn-block btn-primary">Already
+            registred? - Sign In!</a></div>
         <div class="form-group has-float-label">
             <span class="form-group has-float-label">
 
@@ -27,16 +30,17 @@
         </div>
         <div class="form-group has-float-label">
             {{ form.password.label }}
-                {{ form.password(class="form-control", id="password", type="password", placeholder="••••••••") }}
-                {% for error in form.password.errors %}
-                    <p style="color: red;">[{{ error }}]</p>
-                {% endfor %}
+            {{ form.password(class="form-control", id="password", type="password", placeholder="••••••••") }}
+            {% for error in form.password.errors %}
+            <p style="color: red;">[{{ error }}]</p>
+            {% endfor %}
         </div>
         <div class="form-group has-float-label">
+            <label for="password2">Repeat password</label>
             {{ form.password2(class="form-control", id="password", type="password", placeholder="••••••••") }}
-                {% for error in form.password2.errors %}
-                    <p style="color: red;">[{{ error }}]</p>
-                {% endfor %}
+            {% for error in form.password2.errors %}
+            <p style="color: red;">[{{ error }}]</p>
+            {% endfor %}
         </div>
         <div class="text-xs-center">
             {{ form.submit(class="btn btn-block btn-primary", id='button-reg') }}
