@@ -24,7 +24,12 @@
                     </div>
 
                     <p>{{ form.submit(type="submit", value="Log in",id='button') }}</p>
-                    <p style="text-align: center;"><a href="/register">I haven't registered yet</a></p>
+                    {% if action %}
+                     <p style="text-align: center;"><a href="/register/author">I haven't registered yet</a></p>
+                     {% else %}
+                     <p style="text-align: center;"><a href="/register/user">I haven't registered yet</a></p>
+                     {% endif %}
+
                 </form>
             </div>
         </div>
