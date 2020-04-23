@@ -3,7 +3,7 @@ import sqlalchemy
 from sqlalchemy import orm
 from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
-
+from werkzeug.security import check_password_hash
 follow_table = sqlalchemy.Table('followers', SqlAlchemyBase.metadata,
                                 sqlalchemy.Column('user_id', sqlalchemy.Integer,
                                                   sqlalchemy.ForeignKey('users.id')),
@@ -25,6 +25,9 @@ class User(SqlAlchemyBase, UserMixin):
                                      default=datetime.datetime.now)
     followed = orm.relationship("Author", secondary=follow_table)
 
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password,password)
+
 
 class Author(SqlAlchemyBase, UserMixin):
     __tablename__ = 'authors'
@@ -38,3 +41,6 @@ class Author(SqlAlchemyBase, UserMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
     stories = orm.relationship("Story", back_populates='author')
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password, password)

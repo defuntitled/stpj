@@ -56,10 +56,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = session.query(User).filter(User.email == form.email.data).first()
-        if user and user.check_password(generate_password_hash(form.password.data)):
+        if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return flask.redirect("/")
-        return flask.render_template('login.html',
+        print(generate_password_hash(form.password.data))
+        return flask.render_template('login_template.html',
                                      message="Неправильный логин или пароль",
                                      form=form)
     else:
@@ -74,10 +75,10 @@ def login_author():
     form = LoginForm()
     if form.validate_on_submit():
         author = session.query(Author).filter(Author.email == form.email.data).first()
-        if author and author.check_password(generate_password_hash(form.password.data)):
+        if author and author.check_password(form.password.data):
             login_user(author, remember=form.remember_me.data)
             return flask.redirect("/dashboard")
-        return flask.render_template('login.html',
+        return flask.render_template('login_template.html',
                                      form=form)
     else:
         print(form.errors)
