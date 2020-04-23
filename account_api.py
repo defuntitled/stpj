@@ -124,7 +124,7 @@ def register(par):
                   type(generate_password_hash(form.password.data)))
             session.commit()
             return flask.redirect("/login")
-        return flask.render_template('registration_creator.html', action=2, title='Register',
+        return flask.render_template('registration_creator.html', action=False, title='Register',
                                      form=form)
     else:
         form = RegistrationForm()
@@ -140,7 +140,7 @@ def register(par):
             return flask.redirect("/login")
         else:
             print(form.errors)
-        return flask.render_template('registration_creator.html', action=1, form=form)
+        return flask.render_template('registration_creator.html', action=True, form=form)
 
 
 # @blueprint.route("/register_author", methods=['GET', 'POST'])
