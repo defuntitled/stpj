@@ -37,7 +37,7 @@ def feed():
     for i in user.followed:
         stories_for_watching += i
     return flask.render_template("feed.html",
-                                 stories=stories_for_watching)  # в шаблоне циклом надо идти по этой хуйне
+                                 stories=stories_for_watching)
 
 
 @blueprint.route("/story/<int:sid>")
@@ -88,3 +88,15 @@ def generate_cover(sid, aid, grad):
     im.save(f"data/{aid}/{sid}_cover.png")
 
 
+@blueprint.route("/post", methods=['GET', 'POST'])
+def post():
+    if flask.request.method == 'GET':
+        return flask.render_template('create_post.html')
+    else:
+        text = flask.request.form.get('editordata')
+        post_name = flask.request.form.get('post-name')
+
+        post = Story()
+        post.content = text
+        post.head = post_name
+        return text

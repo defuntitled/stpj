@@ -16,7 +16,7 @@ class Story(SqlAlchemyBase):
     cover = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     head = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    likes_count = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    likes_count = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
 
     commented = orm.relationship("Comment")
 

@@ -9,7 +9,8 @@ $(document).ready(function () {
     });
 
     $('#summernote').summernote({
-        minHeight: 500, // set minimum height of editor
+        height: 300, // set editor height
+        minHeight: null, // set minimum height of editor
         maxHeight: null, // set maximum height of editor
         focus: true // set focus to editable area after initializing summernote
     });
@@ -28,7 +29,6 @@ $(document).ready(function () {
                 $('.username').css('color', 'aqua');
                 break;
             case 3:
-                $('.username').css('font-family', '"Source Sans Pro"", sans-serif');
                 $('.username').css('font-weight', '700');
                 $('.username').css('color', 'black');
                 break;
@@ -37,17 +37,20 @@ $(document).ready(function () {
                 $('.username').css('font-weight', '700');
                 $('.username').css('color', '#483949');
                 break;
-            case 5:
-                $('.username').css('font-family', '"Comic Sans MS", cursive, sans-serif');
-                $('.username').css('font-weight', '700');
-                $('.username').css('color', '#008000');
-                break;
         }
 
     }
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function changeColor2() {
+
+
+        var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+        $('.username').css('color', '#' + randomColor);
     }
 
 
@@ -76,7 +79,7 @@ $(document).ready(function () {
     }
 
     setInterval(changeColor, 100);
-    setInterval(changeUserName, 1000);
+    setInterval(changeColor2, 100);
 
     $('#navbar-in').on('mouseover', function () {
         getvalue += 360;

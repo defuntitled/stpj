@@ -11,33 +11,34 @@
     <!-- <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript> -->
 
 
-    <!-- include summernote css/js -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
+
 
 </head>
 
 <body class="homepage is-preload">
     <!-- NAVBAR -->
     <nav class="navbar navbar-light" id='navbar-nav'>
-        <div class="navbar-in" id='navbar-in'>STO <a href="/"><img src="https://img.icons8.com/nolan/64/r.png"></a>IES.RU
+        <div class="row justify-content-space-between mx-auto">
+            <div class="col">
+                <div class="navbar-in" id='navbar-in'>STO <a href="/"><img src="https://img.icons8.com/nolan/64/r.png"></a>IES.RU</div>
+            </div>
         </div>
     </nav>
-    <div class="row">
-        <div class="col">
-           {% if current_user %}
-           <a href="/logout">Logout</a>
-            {% if current_user.utype %}
-            <title>
-                <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <span class='username' href='/dashboard'>{{ current_user.nickname }}!</span></h3>
-            </title>
-            {% else %}
-            <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <span class='username' href='/account_page'>{{ current_user.nickname }}!</span></h3>
-            {% endif %}
-            {% endif %}
 
+
+    <div style="display: flex;justify-content: space-between;margin-top:2%;justify-content: center;align-items: center;background-color:azure;">
+        <div class="col-xs-3 col-sm-5 col-lg-4"><a href="/logout" class="btn btn-block btn-primary" style="float:left;">Logout</a></div>
+        <div class='col'>
+           {% if not current_user.utype %}
+            <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <a class='username' href='/dashboard'>{{ current_user.nickname }}!</a></h3>
+
+            {% else %}
+
+            <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <a class='username' href='/account_page'>{{ current_user.nickname }}!</a></h3>
+
+            {% endif %}
 
         </div>
-
     </div>
 
     {% block content %}{% endblock %}
@@ -76,11 +77,16 @@
     <script src="{{ url_for('static', filename='/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='/js/main2.js') }}"></script>
 
-    <!-- include summernote js -->
-
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
     <!-- include libraries(jQuery, bootstrap) -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script c="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
+
+
 </body>
 
 </html>

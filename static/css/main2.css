@@ -230,7 +230,7 @@ hr:after {
     display: block;
     border-radius: 50%;
     background-color: red;
-    transition: 0.4s;
+    transition: 0.6s;
 }
 
 footer {
@@ -364,7 +364,8 @@ footer p {
 }
 
 .login-form form {
-    padding: 10px;
+
+    padding: 20px;
     margin: 15%;
     text-align: center;
     border-radius: 20px;
@@ -392,9 +393,9 @@ form input {
 #login-header {
     justify-content: center;
     padding: 10%;
-    margin-left: -10px;
-    margin-right: -10px;
-    margin-top: -10px;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-top: -20px;
     margin-bottom: 10%;
     min-height: 10%;
     background-color: #57b846;
@@ -403,11 +404,10 @@ form input {
     font: 'Yanone Kaffeesatz', sans-serif;
 }
 
-#button:hover {
+#button {
     transition: 0.5s;
-    background-color: #57b846;
+    background-color:#007bff;
 }
-
 #registration {
     max-width: 50%;
     justify-content: center;
