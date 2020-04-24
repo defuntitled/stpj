@@ -46,10 +46,7 @@ class Author(SqlAlchemyBase, UserMixin):
     stories = orm.relationship("Story", back_populates='author')
     utype = sqlalchemy.Column(sqlalchemy.Boolean,
                               default=True)
-<<<<<<< HEAD
-=======
     followers = orm.relationship("User", secondary=follow_table, back_populates="followed")
->>>>>>> origin/master
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
