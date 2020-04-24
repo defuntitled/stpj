@@ -5,12 +5,15 @@ from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
 from dbremote.user import User, Author
 <<<<<<< HEAD
+<<<<<<< HEAD
 from dbremote.storys import Story
 
 
 from flask import request
 
 from main import app
+=======
+>>>>>>> origin/master
 =======
 >>>>>>> origin/master
 import os

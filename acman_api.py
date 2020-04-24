@@ -6,9 +6,13 @@ from dbremote.db_session import create_session, global_init
 from dbremote.user import User, Author
 from dbremote.storys import Story, Comment
 import flask
+<<<<<<< HEAD
 from colour import Color
 from PIL import ImageDraw, ImageFont, Image
 import math
+=======
+import os
+>>>>>>> origin/master
 
 global_init("db/data.sqlite")
 
@@ -41,12 +45,41 @@ def cabinet():
         user.followed.remove(author)
         session.commit()
     user = session.query(User).filter(User.id == current_user.id)
+<<<<<<< HEAD
 
 
 
 class DStory(FlaskForm):
+=======
+    follows = user.followed
+    return flask.render_template("account.html", follows=follows)
+
+
+class DStory(FlaskForm):
+    story = StringField("story", validators=[DataRequired()])
+    destroy = SubmitField("del")
+>>>>>>> origin/master
 
 
 @blueprint.route("/dashboard")
 def dashboard():
+<<<<<<< HEAD
 
+=======
+    session = create_session()
+    dstory = DStory()
+    if dstory.validate_on_submit():
+        story = session.query(Story).filter(Story.id == dstory.story.data)
+        session.delete(story)
+        session.commit()
+        os.rmdir(f"data/{current_user.id}/{story.id}")
+    change = ChangeNickname()
+    if change.validate_on_submit():
+        author = session.query(Author).filter(Author.id == current_user.id)
+        author.nickname = change.change.data
+        session.commit()
+    author = session.query(Author).filter(Author.id == current_user.id)
+    stories = author.stories
+    followers_count = len(author.followers)
+    return flask.render_template("dashboard.html", stories=stories, followers_count=followers_count)
+>>>>>>> origin/master

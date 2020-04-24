@@ -22,7 +22,10 @@ class CommentForm(FlaskForm):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/master
 class LikeForm(FlaskForm):
     like = SubmitField("like")
 
@@ -92,4 +95,7 @@ def generate_cover(sid, aid, grad):
 
 @blueprint.route("/post")
 def post():
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
 >>>>>>> origin/master
