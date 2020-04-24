@@ -1,14 +1,9 @@
-from flask import jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
 from dbremote.user import User, Author
-
-from flask import request
-
-from main import app
 import os
 
 import flask
@@ -68,7 +63,7 @@ def login(par):
             print(form.errors)
         return flask.render_template('login_template.html', action=False, title='Авторизация',
                                      form=form)
-    else:
+    elif par == "author":
         if current_user.is_authenticated:
             return flask.redirect("/dashboard")
         form = LoginForm()
@@ -123,10 +118,10 @@ def register(par):
             print(type(form.username.data), type(form.email.data),
                   type(generate_password_hash(form.password.data)))
             session.commit()
-            return flask.redirect("/login")
+            return flask.redirect("/login/user")
         return flask.render_template('registration_creator.html', action=False, title='Register',
                                      form=form)
-    else:
+    elif par == "author":
         form = RegistrationForm()
         if form.validate():
             author = Author()
@@ -137,7 +132,7 @@ def register(par):
             session.add(author)
             session.commit()
             os.mkdir(f"data/{author.id}")
-            return flask.redirect("/login")
+            return flask.redirect("/login/author")
         else:
             print(form.errors)
         return flask.render_template('registration_creator.html', action=True, form=form)
