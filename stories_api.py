@@ -19,5 +19,4 @@ blueprint = flask.Blueprint('news_api', __name__,
 class CommentForm(FlaskForm):
     content = StringField("Content",validators=[DataRequired()])
 
-@blueprint.route("/feed", methods=["GET","POST"])
-def
+

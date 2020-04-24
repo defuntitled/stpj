@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-10" style='justify-content: center; margin: 0 auto; margin-top:5%; margin-bottom:5%;'>
+        <div class="post-name">
+            <h3 class="post-category">Hello {{ user.nickname }}</h3>
+
+        </div>
+        <form method="post">
+            <textarea name="editordata" id="summernote" style='min-height: 30%;'></textarea>
+            <input type="submit" class="btn btn-block btn-primary" value="Отправить публикацию">
+        </form>
+    </div>
+</div>
+{% endblock %}

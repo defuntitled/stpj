@@ -4,9 +4,52 @@ $(document).ready(function () {
     var g = 0;
     var b = 0;
     $('#navbar-in').css('transform', 'rotate(360deg)');
-    $('#button-reg').on('click', function(){
+    $('#button-reg').on('click', function () {
         $(this).text('Your link is waiting for you at ЭЛЕКТРОМЫЛО');
     });
+
+    $('#summernote').summernote({
+        minHeight: 500, // set minimum height of editor
+        maxHeight: null, // set maximum height of editor
+        focus: true // set focus to editable area after initializing summernote
+    });
+
+    function changeUserName() {
+        var x = getRandomInt(1, 6);
+        switch (x) {
+            case 1:
+                $('.username').css('font-family', '"Courier New", Courier, monospace');
+                $('.username').css('font-weight', '700');
+                $('.username').css('color', 'red');
+                break;
+            case 2:
+                $('.username').css('font-family', 'Yanone Kaffeesatz');
+                $('.username').css('font-weight', '700');
+                $('.username').css('color', 'aqua');
+                break;
+            case 3:
+                $('.username').css('font-family', '"Source Sans Pro"", sans-serif');
+                $('.username').css('font-weight', '700');
+                $('.username').css('color', 'black');
+                break;
+            case 4:
+                $('.username').css('font-family', "'Lexend Giga', sans-serif");
+                $('.username').css('font-weight', '700');
+                $('.username').css('color', '#483949');
+                break;
+            case 5:
+                $('.username').css('font-family', '"Comic Sans MS", cursive, sans-serif');
+                $('.username').css('font-weight', '700');
+                $('.username').css('color', '#008000');
+                break;
+        }
+
+    }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
 
 
 
@@ -33,6 +76,8 @@ $(document).ready(function () {
     }
 
     setInterval(changeColor, 100);
+    setInterval(changeUserName, 1000);
+
     $('#navbar-in').on('mouseover', function () {
         getvalue += 360;
         var howmuch = 'rotate(' + Number(getvalue) + 'deg)';
@@ -45,6 +90,8 @@ $(document).ready(function () {
         $('#navbar-in').css('transform', howmuch);
 
     });
+
+
 
     $('#like').on('click', function () {
         $(this).fadeOut(1000);

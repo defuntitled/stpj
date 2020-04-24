@@ -5,6 +5,8 @@ from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
 from dbremote.user import User, Author
+from dbremote.storys import Story
+
 
 from flask import request
 
@@ -131,3 +133,19 @@ def new_author():
 def logout():
     logout_user()
     return flask.redirect("/")
+
+
+@blueprint.route("/alpha-beta", methods=['GET', 'POST'])
+def kek():
+    if request.method == 'GET':
+        print(type(current_user))
+        return flask.render_template('create_post.html', user=current_user)
+    else:
+        story = Story()
+        story.content = request.form.get('editordata')
+        session.add(story)
+        session.commit()
+        os.mkdir(f"data/{author.id}")
+        return flask.redirect("/login")
+        print(request.form.get('editordata'))
+        return 'ok'
