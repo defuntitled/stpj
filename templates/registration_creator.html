@@ -7,8 +7,9 @@
 
 
         <legend class="m-b-1 text-xs-center" id='reg-header'>{% if action %} Creator registration {% else %} User registration{% endif %}</legend>
-        <div class="text-xs-center"><a href="/login" class="btn btn-block btn-primary">Already
-            registred? - Sign In!</a></div>
+        <div class="text-xs-center">{% if action %}<a href="/login/author" class="btn btn-block btn-primary">Already
+            registred? - Sign In!</a>{% else %}<a href="/login/user" class="btn btn-block btn-primary">Already
+            registred? - Sign In!</a>{% endif %}</div>
         <div class="form-group has-float-label">
             <span class="form-group has-float-label">
 
