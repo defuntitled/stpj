@@ -24,8 +24,18 @@
     </nav>
     <div class="row">
         <div class="col">
-            {}
-            <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <span class='username' href='/account_page'>{{ user.nickname }}!</span></h3>
+           {% if current_user %}
+           <a href="/logout">Logout</a>
+            {% if current_user.utype %}
+            <title>
+                <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <span class='username' href='/dashboard'>{{ current_user.nickname }}!</span></h3>
+            </title>
+            {% else %}
+            <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <span class='username' href='/account_page'>{{ current_user.nickname }}!</span></h3>
+            {% endif %}
+            {% endif %}
+
+
         </div>
 
     </div>

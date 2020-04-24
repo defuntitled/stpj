@@ -12,7 +12,7 @@ import math
 
 global_init("db/data.sqlite")
 
-blueprint = flask.Blueprint('news_api', __name__,
+blueprint = flask.Blueprint('news_api2', __name__,
                             template_folder='templates')
 
 
@@ -21,11 +21,6 @@ class CommentForm(FlaskForm):
     send = SubmitField("send")
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
 class LikeForm(FlaskForm):
     like = SubmitField("like")
 
@@ -93,9 +88,3 @@ def generate_cover(sid, aid, grad):
     im.save(f"data/{aid}/{sid}_cover.png")
 
 
-@blueprint.route("/post")
-def post():
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> origin/master
