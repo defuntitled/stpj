@@ -472,17 +472,112 @@ form input {
     }
 }
 
-#carousel-example-1z{
-    margin:10%;
+#carousel-example-1z {
+    margin: 10%;
 }
-#but{
+
+#but {
     display: block;
     margin: 25% 0 5% 0;
 }
 
-.carousel-caption h2{
+.carousel-caption h2 {
     margin-bottom: 30%;
 }
+
+.checkbox-wrapper {
+    display: inline-block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.checkbox-wrapper input {
+    cursor: pointer;
+    height: 20px;
+    margin: 0px;
+    opacity: 0;
+    position: absolute;
+    width: 20px;
+    z-index: 2;
+}
+
+.checkbox-wrapper input:active + .checkbox:before {
+    height: 50px;
+    width: 50px;
+}
+
+.checkbox-wrapper input:checked + .checkbox {
+    border: 2px solid #29b6f6;
+}
+
+.checkbox-wrapper input:checked + .checkbox:before {
+    animation: pulse 1s cubic-bezier(0.15, 0.8, 0.5, 1);
+}
+
+.checkbox-wrapper input:checked + .checkbox:after {
+    height: 20px;
+    opacity: 1;
+    width: 20px;
+}
+
+.checkbox-wrapper .checkbox {
+    border: 2px solid black;
+    border-radius: 2px;
+    height: 16px;
+    position: relative;
+    transition: all 0.5s;
+    width: 16px;
+}
+
+.checkbox-wrapper .checkbox:before,
+.checkbox-wrapper .checkbox:after {
+    content: '';
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    transition: all 0.5s;
+}
+
+.checkbox-wrapper .checkbox:before {
+    background-color: rgba(242, 242, 242, 0.9);
+    border-radius: 50%;
+    height: 5px;
+    width: 5px;
+    z-index: -1;
+}
+
+.checkbox-wrapper .checkbox:after {
+    background-color: #29b6f6;
+    border-radius: 2px;
+    height: 5px;
+    opacity: 0;
+    width: 5px;
+}
+
+.checkbox-wrapper .checkbox i {
+    color: white;
+    height: 18px;
+    left: 0px;
+    pointer-events: none;
+    position: absolute;
+    top: 0px;
+    width: 18px;
+    z-index: 2;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0px #29b6f6;
+    }
+
+    100% {
+        box-shadow: 0 0 0 25px rgba(242, 242, 242, 0);
+    }
+}
+
 /* Smartphones (вертикальная и горизонтальная ориентация) ----------- */
 @media only screen and (min-width : 320px) and (max-width : 480px) {
     #carousel-example-1z {
@@ -494,8 +589,8 @@ form input {
         margin: 25% 0 5% 0;
     }
 
-    .carousel-caption h2{
-        color:red;
+    .carousel-caption h2 {
+        color: red;
         margin-bottom: 5%;
     }
 }
@@ -511,8 +606,8 @@ form input {
         margin: 25% 0 5% 0;
     }
 
-    .carousel-caption h2{
-        color:red;
+    .carousel-caption h2 {
+        color: red;
         margin-bottom: 5%;
     }
 }

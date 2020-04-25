@@ -17,12 +17,14 @@ blueprint = flask.Blueprint('news_api2', __name__,
 
 
 class CommentForm(FlaskForm):
-    content = StringField("Content", validators=[DataRequired()])
+    content = StringField("Content", validators=[DataRequired()], )
     send = SubmitField("send")
+    like = BooleanField('')
+    subscribe = BooleanField("subscribe")
 
 
 class LikeForm(FlaskForm):
-    like = SubmitField("like")
+    like = BooleanField('')
 
 
 class FollowForm(FlaskForm):
@@ -43,34 +45,33 @@ def feed():
                                  stories=stories_for_watching)
 
 
-@blueprint.route("/story/<int:sid>")
+@blueprint.route("/story/<int:sid>", methods=['GET', 'POST'])
 def story(sid):
     session = create_session()
-    story = session.query(Story).filter(Story.id == sid)
-    sub = FollowForm()
-    form = CommentForm()
-    like = LikeForm()
-    if form.validate_on_submit():
-        comment = Comment()
-        comment.content = form.content.data
-        comment.head = current_user.nickname
-        session.add(comment)
-        session.commit()
-    if like.validate_on_submit():
-        story.likes_count += 1
-        session.commit()
-    if sub.validate_on_submit():
-        user = session.query(User).filter(User.id == current_user.id, story.author in User.followed)
-        if user:
-            user.followed.remove(story.author)
+    story = session.query(Story).filter(Story.id == sid).first()
+    if flask.request.method == 'GET':
+        content = story.content
+        comments = story.commented
+        header = story.head
+        name = session.query(User).filter(User.id == story.author_id).first()
+        return flask.render_template("post_template.html", content=content, comments=comments, header=header, name=name.nickname, likes=story.likes_count)
+    else:
+        content = story.content
+        comments = story.commented
+        header = story.head
+        name = session.query(User).filter(User.id == story.author_id).first()
+        req = flask.request.form
+        if req.get('editordata'):
+            print('ok')
+            comment = Comment()
+            comment.content = req.get('editordata')
+            comment.head = current_user.nickname
+            comment.story = story
             session.commit()
-        else:
-            user.followed.append(story.author)
+        if req.get('post-like'):
+            story.likes_count += 1
             session.commit()
-    content = story.content
-    comments = story.commented
-
-    return flask.render_template("story.html", content=content, comments=comments)
+        return flask.render_template('post_template.html', content=content, comments=comments, header=header, name=name.nickname, likes=story.likes_count)
 
 
 def generate_cover(sid, aid, grad):
@@ -108,7 +109,7 @@ def post():
             elif checkbox2:
                 color = "/static/img/red.jpg"
             elif checkbox3:
-               color = "/static/img/green.jpg"
+                color = "/static/img/green.jpg"
             else:
                 color = "/static/img/white.jpg"
             print(text)
@@ -128,4 +129,3 @@ def post():
             return flask.redirect("/dashboard")
     else:
         return flask.redirect('/')
-

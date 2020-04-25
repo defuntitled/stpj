@@ -4,7 +4,9 @@
 <div class="container">
     <div class="row">
         <div class="col">
-        {{ current_user.utype }}
+            <h3 class="post-category">Your Dashboard here {{ current_user.nickname }} </h3>{{ followers_count }}
+            <a href='/post' class="btn btn-block btn-primary" style="margin-top: 5%;"> New post!</a>
+
         </div>
 
     </div>
