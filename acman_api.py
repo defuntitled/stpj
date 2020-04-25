@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
-from dbremote.user import User, Author
+from dbremote.user import User
 from dbremote.storys import Story, Comment
 import flask
 import os
@@ -56,13 +56,12 @@ def dashboard():
         story = session.query(Story).filter(Story.id == dstory.story.data)
         session.delete(story)
         session.commit()
-        os.rmdir(f"data/{current_user.id}/{story.id}")
     change = ChangeNickname()
     if change.validate_on_submit():
-        author = session.query(Author).filter(Author.id == current_user.id)
+        author = session.query(User).filter(User.id == current_user.id)
         author.nickname = change.change.data
         session.commit()
-    author = session.query(Author).filter(Author.id == current_user.id)
+    author = session.query(User).filter(User.id == current_user.id)
     stories = author.stories
     followers_count = len(author.followers)
     return flask.render_template("dashboard.html", stories=stories, followers_count=followers_count)

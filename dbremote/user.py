@@ -36,14 +36,3 @@ class User(SqlAlchemyBase, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
 
-    def follow(self, user):
-        if not self.is_following(user):
-            self.followed.append(user)
-
-    def unfollow(self, user):
-        if self.is_following(user):
-            self.followed.remove(user)
-
-    def is_following(self, user):
-        return self.followed.filter(
-            follow_table.c.followed_id == user.id).count() > 0

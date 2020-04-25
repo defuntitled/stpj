@@ -37,6 +37,8 @@ def feed():
 
     for i in user.followed:
         stories_for_watching += i
+    if not stories_for_watching:
+        stories_for_watching = session.query(Story).all()
     return flask.render_template("feed.html",
                                  stories=stories_for_watching)
 
@@ -104,9 +106,9 @@ def post():
             if checkbox1:
                 color = "/static/img/white.jpg"
             elif checkbox2:
-                color = "/static/img/green.jpg"
-            elif checkbox3:
                 color = "/static/img/red.jpg"
+            elif checkbox3:
+               color = "/static/img/green.jpg"
             else:
                 color = "/static/img/white.jpg"
             print(text)
@@ -118,6 +120,9 @@ def post():
             post = Story()
             post.content = text
             post.head = post_name
-            return text
+            session = create_session()
+            session.add(story)
+            session.commit()
+            return flask.redirect("/dashboard")
     else:
         return flask.redirect('/')
