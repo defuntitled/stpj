@@ -94,7 +94,7 @@ def generate_cover(sid, aid, grad):
 
 @blueprint.route("/post", methods=['GET', 'POST'])
 def post():
-    if current_user.is_authenticated and current_user.utype:
+    if current_user.is_authenticated:
         if flask.request.method == 'GET':
             return flask.render_template('create_post.html')
         else:
@@ -108,7 +108,7 @@ def post():
             elif checkbox2:
                 color = "/static/img/red.jpg"
             elif checkbox3:
-                color = "/static/img/green.jpg"
+               color = "/static/img/green.jpg"
             else:
                 color = "/static/img/white.jpg"
             print(text)
@@ -116,15 +116,16 @@ def post():
             print(checkbox1)
             print(checkbox2)
             print(checkbox3)
+
+            post = Story()
+            post.content = text
+            post.head = post_name
+            post.author_id = current_user.id
+            post.cover = color
             session = create_session()
-            storyy = Story()
-            storyy.content = text
-            storyy.head = post_name
-            storyy.cover = color
-            author = session.query(User).filter(User.id == current_user.id).one()
-            storyy.author = author
-            session.add(storyy)
+            session.add(post)
             session.commit()
             return flask.redirect("/dashboard")
     else:
         return flask.redirect('/')
+
