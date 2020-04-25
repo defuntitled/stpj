@@ -8,6 +8,8 @@ $(document).ready(function () {
         $(this).text('Your link is waiting for you at ЭЛЕКТРОМЫЛО');
     });
 
+
+
     $('#summernote').summernote({
         height: 300, // set editor height
         minHeight: null, // set minimum height of editor

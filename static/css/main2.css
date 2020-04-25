@@ -472,23 +472,36 @@ form input {
     }
 }
 
+#carousel-example-1z{
+    margin:10%;
+}
+#but{
+    display: block;
+    margin: 25% 0 5% 0;
+}
 
+.carousel-caption h2{
+    margin-bottom: 30%;
+}
 /* Smartphones (вертикальная и горизонтальная ориентация) ----------- */
 @media only screen and (min-width : 320px) and (max-width : 480px) {
     #carousel-example-1z {
         margin: 0;
-        height: 150%;
     }
 
     #but {
         display: block;
         margin: 25% 0 5% 0;
     }
+
+    .carousel-caption h2{
+        color:red;
+        margin-bottom: 5%;
+    }
 }
 
-
 /* Smartphones (вертикальная) ----------- */
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 370px) {
     #carousel-example-1z {
         margin: 0;
     }
@@ -496,5 +509,10 @@ form input {
     #but {
         display: block;
         margin: 25% 0 5% 0;
+    }
+
+    .carousel-caption h2{
+        color:red;
+        margin-bottom: 5%;
     }
 }

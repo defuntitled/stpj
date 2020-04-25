@@ -34,10 +34,9 @@ def feed():
     stories_for_watching = []
     session = create_session()
     user = session.query(User).filter(User.id == current_user.id)
-    for i in user.followed:
-        stories_for_watching += i
-    return flask.render_template("feed.html",
-                                 stories=stories_for_watching)
+    print(current_user.id)
+    print(type(user))
+    return flask.render_template("feed.html")
 
 
 @blueprint.route("/story/<int:sid>")
@@ -66,6 +65,7 @@ def story(sid):
             session.commit()
     content = story.content
     comments = story.commented
+
     return flask.render_template("story.html", content=content, comments=comments)
 
 
@@ -100,13 +100,13 @@ def post():
             checkbox2 = flask.request.form.get('radio2')
             checkbox3 = flask.request.form.get('radio3')
             if checkbox1:
-                color = 'linear-gradient(45deg, #EECFBA, #C5DDE8)'
+                color = "/static/img/white.jpg"
             elif checkbox2:
-                color = 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
+                color = "/static/img/green.jpg"
             elif checkbox3:
                 color = 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(26,246,73,1) 100%)'
             else:
-                color = 'linear-gradient(45deg, #EECFBA, #C5DDE8)'
+                color = "/static/img/red.jpg"
             print(text)
             print(post_name)
             print(checkbox1)
