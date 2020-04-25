@@ -35,7 +35,7 @@ def cabinet():
         session.commit()
     if disf.validate_on_submit():
         user = session.query(User).filter(User.id == current_user.id)
-        author = session.query(Author).filter(Author.id == disf.author.data)
+        author = session.query(User).filter(User.id == disf.author.data)
         user.followed.remove(author)
         session.commit()
     user = session.query(User).filter(User.id == current_user.id)
@@ -50,18 +50,21 @@ class DStory(FlaskForm):
 
 @blueprint.route("/dashboard")
 def dashboard():
-    session = create_session()
-    dstory = DStory()
-    if dstory.validate_on_submit():
-        story = session.query(Story).filter(Story.id == dstory.story.data)
-        session.delete(story)
-        session.commit()
-    change = ChangeNickname()
-    if change.validate_on_submit():
+    if current_user.utype:
+        session = create_session()
+        dstory = DStory()
+        if dstory.validate_on_submit():
+            story = session.query(Story).filter(Story.id == dstory.story.data)
+            session.delete(story)
+            session.commit()
+        change = ChangeNickname()
+        if change.validate_on_submit():
+            author = session.query(User).filter(User.id == current_user.id)
+            author.nickname = change.change.data
+            session.commit()
         author = session.query(User).filter(User.id == current_user.id)
-        author.nickname = change.change.data
-        session.commit()
-    author = session.query(User).filter(User.id == current_user.id)
-    stories = author.stories
-    followers_count = len(author.followers)
-    return flask.render_template("dashboard.html", stories=stories, followers_count=followers_count)
+        stories = author.stories
+        followers_count = len(author.followers)
+        return flask.render_template("dashboard.html", stories=stories, followers_count=followers_count)
+    else:
+        return flask.redirect("/")
