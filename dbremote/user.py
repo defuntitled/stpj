@@ -6,10 +6,10 @@ from .db_session import SqlAlchemyBase
 from werkzeug.security import check_password_hash
 
 follow_table = sqlalchemy.Table('followers', SqlAlchemyBase.metadata,
-                                sqlalchemy.Column('user_id', sqlalchemy.Integer,
+                                sqlalchemy.Column('follower_id', sqlalchemy.Integer,
                                                   sqlalchemy.ForeignKey('users.id')),
-                                sqlalchemy.Column('author_id', sqlalchemy.Integer,
-                                                  sqlalchemy.ForeignKey('authors.id'))
+                                sqlalchemy.Column('followed_id', sqlalchemy.Integer,
+                                                  sqlalchemy.ForeignKey('users.id'))
                                 )
 
 
@@ -24,29 +24,26 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-    followed = orm.relationship("Author", secondary=follow_table)
+    followed = orm.relationship(
+        'User', secondary=follow_table,
+        primaryjoin=(follow_table.c.follower_id == id),
+        secondaryjoin=(follow_table.c.followed_id == id),
+        backref=orm.backref('follow_table', lazy='dynamic'), lazy='dynamic')
     utype = sqlalchemy.Column(sqlalchemy.Boolean,
                               default=False)
-
-    def check_password(self, password):
-        return check_password_hash(self.hashed_password, password)
-
-
-class Author(SqlAlchemyBase, UserMixin):
-    __tablename__ = 'authors'
-
-    id = sqlalchemy.Column(sqlalchemy.Integer,
-                           primary_key=True, autoincrement=True)
-    nickname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    email = sqlalchemy.Column(sqlalchemy.String,
-                              index=True, unique=True, nullable=True)
-    hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    created_date = sqlalchemy.Column(sqlalchemy.DateTime,
-                                     default=datetime.datetime.now)
     stories = orm.relationship("Story", back_populates='author')
-    utype = sqlalchemy.Column(sqlalchemy.Boolean,
-                              default=True)
-    followers = orm.relationship("User", secondary=follow_table, back_populates="followed")
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            follow_table.c.followed_id == user.id).count() > 0
