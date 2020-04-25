@@ -19,6 +19,10 @@ class ChangeNickname(FlaskForm):
     cub = SubmitField("sub")
 
 
+class FollowForm(FlaskForm):
+    subscribe = SubmitField("subscribe")
+
+
 class DisFollowed(FlaskForm):
     author = StringField("author", validators=[DataRequired()])
     disfollow = SubmitField("disfollow")
@@ -35,7 +39,7 @@ def cabinet():
         session.commit()
     if disf.validate_on_submit():
         user = session.query(User).filter(User.id == current_user.id)
-        author = session.query(Author).filter(Author.id == disf.author.data)
+        author = session.query(User).filter(User.id == disf.author.data)
         user.followed.remove(author)
         session.commit()
     user = session.query(User).filter(User.id == current_user.id)
@@ -51,14 +55,20 @@ class DStory(FlaskForm):
 @blueprint.route("/dashboard")
 def dashboard():
     session = create_session()
-    dstory = DStory()
-    if dstory.validate_on_submit():
-        story = session.query(Story).filter(Story.id == dstory.story.data)
-        session.delete(story)
-        session.commit()
-    change = ChangeNickname()
-    if change.validate_on_submit():
+    if current_user.utype:
+        session = create_session()
+        dstory = DStory()
+        if dstory.validate_on_submit():
+            story = session.query(Story).filter(Story.id == dstory.story.data)
+            session.delete(story)
+            session.commit()
+        change = ChangeNickname()
+        if change.validate_on_submit():
+            author = session.query(User).filter(User.id == current_user.id)
+            author.nickname = change.change.data
+            session.commit()
         author = session.query(User).filter(User.id == current_user.id)
+
         author.nickname = change.change.data
         session.commit()
     author = session.query(User).filter(User.id == current_user.id).first()
@@ -66,3 +76,26 @@ def dashboard():
     stories = author.stories
     followers_count = author.followers
     return flask.render_template("dashboard.html", stories=stories, followers=followers_count)
+
+
+@blueprint.route("/author/<int:aid>")
+def card(aid):
+    session = create_session()
+    author = session.query(User).filter(User.id == aid)
+    if current_user.is_authenticated:
+        sub = FollowForm()
+        if sub.validate_on_submit():
+            user = session.query(User).filter(User.id == current_user.id)
+            if author in user.followed:
+                user.followed.remove(author)
+                session.commit()
+                author.followers -= 1
+                session.commit()
+            else:
+                user.followed.append(author)
+                session.commit()
+                author.followers += 1
+                session.commit()
+    else:
+        return flask.redirect("/")
+    return flask.render_template("card.html", name=author.nickname, fc=author.followers)

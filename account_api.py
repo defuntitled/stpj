@@ -1,18 +1,21 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FileField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
 from dbremote.user import User
 import os
-
+from main import app
 import flask
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
 
 global_init("db/data.sqlite")
 
 blueprint = flask.Blueprint('news_api', __name__,
                             template_folder='templates')
+
+ALLOWED_EXTENSIONS = {'png', 'jpg'}
 
 
 class LoginForm(FlaskForm):
@@ -28,6 +31,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    ava = FileField("avatar")
     submit = SubmitField('Done!')
 
     def validate_username(self, username):
@@ -41,6 +45,11 @@ class RegistrationForm(FlaskForm):
         user = session.query(User).filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @blueprint.route("/login/<string:par>", methods=["GET", "POST"])
@@ -115,13 +124,16 @@ def register(par):
             user.nickname = form.username.data
             user.email = form.email.data
             user.hashed_password = generate_password_hash(form.password.data)
-
-            # добавить проверку email
+            if allowed_file(form.ava.file.filename):
+                file_name = secure_filename(form.ava.file.filename)
+                form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+                user.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             session = create_session()
             session.add(user)
             print(type(form.username.data), type(form.email.data),
                   type(generate_password_hash(form.password.data)))
             session.commit()
+
             return flask.redirect("/login/user")
         return flask.render_template('registration_creator.html', action=False, title='Register',
                                      form=form)
@@ -133,10 +145,14 @@ def register(par):
             author.email = form.email.data
             author.hashed_password = generate_password_hash(form.password.data)
             author.utype = True
+            if allowed_file(form.ava.file.filename):
+                file_name = secure_filename(form.ava.file.filename)
+                form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+                author.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             session = create_session()
             session.add(author)
             session.commit()
-            os.mkdir(f"data/{author.id}")
+
             return flask.redirect("/login/author")
         else:
             print(form.errors)
