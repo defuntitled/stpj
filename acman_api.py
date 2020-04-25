@@ -52,7 +52,7 @@ class DStory(FlaskForm):
     destroy = SubmitField("del")
 
 
-@blueprint.route("/dashboard")
+@blueprint.route("/dashboard")  # панель управления постами и авторской статистикой
 def dashboard():
     if current_user.utype:
         session = create_session()
@@ -75,7 +75,7 @@ def dashboard():
         return flask.redirect("/")
 
 
-@blueprint.route("/author/<int:aid>")
+@blueprint.route("/author/<int:aid>")  # "визитная карточка" автора
 def card(aid):
     session = create_session()
     author = session.query(User).filter(User.id == aid)

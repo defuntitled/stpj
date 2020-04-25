@@ -26,7 +26,7 @@ class FollowForm(FlaskForm):
     subscribe = SubmitField("subscribe")
 
 
-@blueprint.route("/feed", methods=["GET", "POST"])
+@blueprint.route("/feed", methods=["GET", "POST"])  # общая лента с историями
 def feed():
     stories_for_watching = []
     session = create_session()
@@ -40,7 +40,7 @@ def feed():
                                  stories=stories_for_watching)
 
 
-@blueprint.route("/story/<int:sid>")
+@blueprint.route("/story/<int:sid>")  # конкретный пост
 def story(sid):
     session = create_session()
     story = session.query(Story).filter(Story.id == sid)
@@ -77,7 +77,7 @@ def story(sid):
     return flask.render_template("story.html", content=content, comments=comments)
 
 
-@blueprint.route("/post", methods=['GET', 'POST'])
+@blueprint.route("/post", methods=['GET', 'POST'])  # создание истории
 def post():
     if current_user.is_authenticated:
         if flask.request.method == 'GET':
