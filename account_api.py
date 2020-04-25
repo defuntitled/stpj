@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
-from dbremote.user import User, Author
+from dbremote.user import User
 import os
 
 import flask
@@ -46,6 +46,8 @@ class RegistrationForm(FlaskForm):
 @blueprint.route("/login/<string:par>", methods=["GET", "POST"])
 def login(par):
     if par == "user":
+        res = flask.make_response("Setting a cookie")
+        res.set_cookie('utype', 'user', max_age=60 * 60 * 24 * 365 * 2)
         if current_user.is_authenticated:
             return flask.redirect("/feed")
         form = LoginForm()
@@ -64,12 +66,14 @@ def login(par):
         return flask.render_template('login_template.html', action=False, title='Авторизация',
                                      form=form)
     elif par == "author":
+        res = flask.make_response("Setting a cookie")
+        res.set_cookie('utype', 'author', max_age=60 * 60 * 24 * 365 * 2)
         if current_user.is_authenticated:
             return flask.redirect("/dashboard")
         form = LoginForm()
         if form.validate_on_submit():
             session = create_session()
-            author = session.query(Author).filter(Author.email == form.email.data).first()
+            author = session.query(User).filter(User.email == form.email.data).first()
             if author and author.check_password(form.password.data):
                 login_user(author, remember=form.remember_me.data)
                 return flask.redirect("/dashboard")
@@ -124,10 +128,11 @@ def register(par):
     elif par == "author":
         form = RegistrationForm()
         if form.validate():
-            author = Author()
+            author = User()
             author.nickname = form.username.data
             author.email = form.email.data
             author.hashed_password = generate_password_hash(form.password.data)
+            author.utype = True
             session = create_session()
             session.add(author)
             session.commit()

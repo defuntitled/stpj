@@ -10,8 +10,8 @@ class Story(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     author_id = sqlalchemy.Column(sqlalchemy.Integer,
-                                  sqlalchemy.ForeignKey("authors.id"))
-    author = orm.relationship('Author')
+                                  sqlalchemy.ForeignKey("users.id"))
+    author = orm.relationship('User')
 
     cover = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
@@ -28,4 +28,3 @@ class Comment(SqlAlchemyBase):
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     story_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("stories.id"))
     story = orm.relationship("Story", back_populates="commented")
-

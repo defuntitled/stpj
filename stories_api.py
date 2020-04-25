@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
-from dbremote.user import User, Author
+from dbremote.user import User
 from dbremote.storys import Story, Comment
 import flask
 from colour import Color
@@ -33,7 +33,8 @@ class FollowForm(FlaskForm):
 def feed():
     stories_for_watching = []
     session = create_session()
-    user = session.query(User).filter(User.id == current_user.id)
+    user = session.query(User).filter(User.id == current_user.id).one()
+
     for i in user.followed:
         stories_for_watching += i
     return flask.render_template("feed.html",
