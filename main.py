@@ -32,5 +32,15 @@ def main_page():
     return render_template("index.html")
 
 
+@app.errorhandler(404)
+def not_found_error(err):
+    return render_template('error_handler.html'), 404
+
+
+@app.errorhandler(500)
+def not_found_error(err):
+    return render_template('error_handler.html'), 500
+
+
 if __name__ == "__main__":
     main()

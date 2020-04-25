@@ -90,13 +90,32 @@ def generate_cover(sid, aid, grad):
 
 @blueprint.route("/post", methods=['GET', 'POST'])
 def post():
-    if flask.request.method == 'GET':
-        return flask.render_template('create_post.html')
-    else:
-        text = flask.request.form.get('editordata')
-        post_name = flask.request.form.get('post-name')
+    if current_user.is_authenticated:
+        if flask.request.method == 'GET':
+            return flask.render_template('create_post.html')
+        else:
+            text = flask.request.form.get('editordata')
+            post_name = flask.request.form.get('post-name')
+            checkbox1 = flask.request.form.get('radio1')
+            checkbox2 = flask.request.form.get('radio2')
+            checkbox3 = flask.request.form.get('radio3')
+            if checkbox1:
+                color = 'linear-gradient(45deg, #EECFBA, #C5DDE8)'
+            elif checkbox2:
+                color = 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
+            elif checkbox3:
+                color = 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(26,246,73,1) 100%)'
+            else:
+                color = 'linear-gradient(45deg, #EECFBA, #C5DDE8)'
+            print(text)
+            print(post_name)
+            print(checkbox1)
+            print(checkbox2)
+            print(checkbox3)
 
-        post = Story()
-        post.content = text
-        post.head = post_name
-        return text
+            post = Story()
+            post.content = text
+            post.head = post_name
+            return text
+    else:
+        return flask.redirect('/')

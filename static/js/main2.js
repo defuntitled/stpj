@@ -15,6 +15,49 @@ $(document).ready(function () {
         focus: true // set focus to editable area after initializing summernote
     });
 
+    $('#post-radio1').on('click', function () {
+        $('#form-post').css('transition', 'background 0.8s ease');
+        $('#form-post').css('background', 'linear-gradient(45deg, #EECFBA, #C5DDE8)');
+        if($('#post-radio1').is(':checked')) {
+            $("#post-radio2").attr("disabled", true);
+            $("#post-radio3").attr("disabled", true);
+        } else {
+            $("#post-radio2").attr("disabled", false);
+            $("#post-radio3").attr("disabled", false);
+        }
+        $("#post-radio2").removeAttr("checked");
+        $("#post-radio3").removeAttr("checked");
+
+    });
+
+    $('#post-radio2').on('click', function () {
+        $('#form-post').css('transition', 'background 0.8s ease');
+        $('#form-post').css('background', 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)');
+        if($('#post-radio2').is(':checked')) {
+            $("#post-radio1").attr("disabled", true);
+            $("#post-radio3").attr("disabled", true);
+        } else {
+            $("#post-radio1").attr("disabled", false);
+            $("#post-radio3").attr("disabled", false);
+        }
+        $("#post-radio1").removeAttr("checked");
+        $("#post-radio3").removeAttr("checked");
+    });
+
+    $('#post-radio3').on('click', function () {
+        $('#form-post').css('transition', 'background 0.8s ease');
+        $('#form-post').css('background', 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(26,246,73,1) 100%)');
+        if($('#post-radio3').is(':checked')) {
+            $("#post-radio1").attr("disabled", true);
+            $("#post-radio2").attr("disabled", true);
+        } else {
+            $("#post-radio1").attr("disabled", false);
+            $("#post-radio2").attr("disabled", false);
+        }
+        $("#post-radio2").removeAttr("checked");
+        $("#post-radio1").removeAttr("checked");
+    });
+
     function changeUserName() {
         var x = getRandomInt(1, 6);
         switch (x) {
@@ -99,4 +142,25 @@ $(document).ready(function () {
     $('#like').on('click', function () {
         $(this).fadeOut(1000);
     });
+
+    var wrapper = document.querySelector(".wrapper");
+    var text = document.querySelector(".text");
+
+    var textCont = text.textContent;
+    text.style.display = "none";
+
+    for (var i = 0; i < textCont.length; i++) {
+        (function (i) {
+            setTimeout(function () {
+                // Created textNode to append
+                var texts = document.createTextNode(textCont[i])
+                var span = document.createElement('span');
+                span.appendChild(texts);
+
+                span.classList.add("wave");
+                wrapper.appendChild(span);
+
+            }, 75 * i);
+        }(i));
+    }
 });

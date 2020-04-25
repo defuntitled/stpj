@@ -406,8 +406,9 @@ form input {
 
 #button {
     transition: 0.5s;
-    background-color:#007bff;
+    background-color: #007bff;
 }
+
 #registration {
     max-width: 50%;
     justify-content: center;
@@ -449,8 +450,26 @@ form input {
     margin: 25% 0 5% 0;
 }
 
-.username{
+.username {
     transition: 0.5s;
+}
+
+#form-post {
+    transition: background 0.8s ease;
+}
+
+
+.wave {
+    font-weight: 700;
+    line-height: 2;
+    color: #999999;
+    animation: 0.5s color infinite;
+}
+
+@keyframes color {
+    50% {
+        color: #8fc8ae;
+    }
 }
 
 

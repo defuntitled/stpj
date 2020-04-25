@@ -1,18 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
+<div class="row" id="form-post">
     <div class="col-10" style='justify-content: center; margin: 0 auto; margin-top:5%; margin-bottom:5%;'>
         <div class="post-name">
             <h3 class="post-category">Tell the world about your thoughts, {{ current_user.nickname }}</h3>
 
         </div>
         <form method="post">
-          <div class="row">
-              <div class="col"><input type="text" name='post-name' style="border: 3px solid black; margin:0 auto;margin-bottom:3%;border-radius: 20px;padding:10px;" placeholder="Post name"></div>
-          </div>
+            <div class="row">
+                <div class="col"><input type="text" name='post-name' style="border: 3px solid black; margin:0 auto;margin-bottom:3%;border-radius: 20px;padding:10px;" placeholder="Post name" required></div>
+            </div>
 
-            <textarea name="editordata" id="summernote" style='min-height: 30%;' ></textarea>
+            <textarea name="editordata" id="summernote" style='min-height: 30%;' required></textarea>
+
+            <p>Background-color of your story:</p>
+            <div class="row">
+                <div class="col" style="justify-content: space-between;" id='color-input'>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="radio1" id="post-radio1" value="option1">
+                        <label class="form-check-label" for="inlineRadio2">White</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="radio2" id="post-radio2" value="option2">
+                        <label class="form-check-label" for="inlineRadio2">Purple</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="radio3" id="post-radio3" value="option3">
+                        <label class="form-check-label" for="inlineRadio2">Green</label>
+                    </div>
+                </div>
+            </div>
+
             <input type="submit" class="btn btn-block btn-primary" value="Post!" style="margin-top:4%;">
         </form>
     </div>
