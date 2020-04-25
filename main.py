@@ -10,6 +10,8 @@ from dbremote.user import User
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "sk"
+UPLOAD_FOLDER = '/data'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 login_manager = LoginManager()
 login_manager.init_app(app)
 

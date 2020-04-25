@@ -72,6 +72,7 @@ def story(sid):
             session.commit()
             author = session.query(User).filter(User.id == story.authror.id)
             author.followers += 1
+            session.commit()
     content = story.content
     comments = story.commented
 

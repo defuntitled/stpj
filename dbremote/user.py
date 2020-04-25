@@ -33,7 +33,7 @@ class User(SqlAlchemyBase, UserMixin):
     utype = sqlalchemy.Column(sqlalchemy.Boolean,
                               default=False)
     stories = orm.relationship("Story", back_populates='author')
-    avatar = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    avatar = sqlalchemy.Column(sqlalchemy.String, nullable=True, default="data/default.jpg")
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)

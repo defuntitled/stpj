@@ -19,6 +19,10 @@ class ChangeNickname(FlaskForm):
     cub = SubmitField("sub")
 
 
+class FollowForm(FlaskForm):
+    subscribe = SubmitField("subscribe")
+
+
 class DisFollowed(FlaskForm):
     author = StringField("author", validators=[DataRequired()])
     disfollow = SubmitField("disfollow")
@@ -65,6 +69,30 @@ def dashboard():
         author = session.query(User).filter(User.id == current_user.id)
         stories = author.stories
         followers_count = len(author.followers)
-        return flask.render_template("dashboard.html", stories=stories, followers_count=followers_count)
+        return flask.render_template("dashboard.html", stories=stories,
+                                     followers_count=followers_count)
     else:
         return flask.redirect("/")
+
+
+@blueprint.route("/author/<int:aid>")
+def card(aid):
+    session = create_session()
+    author = session.query(User).filter(User.id == aid)
+    if current_user.is_authenticated:
+        sub = FollowForm()
+        if sub.validate_on_submit():
+            user = session.query(User).filter(User.id == current_user.id)
+            if author in user.followed:
+                user.followed.remove(author)
+                session.commit()
+                author.followers -= 1
+                session.commit()
+            else:
+                user.followed.append(author)
+                session.commit()
+                author.followers += 1
+                session.commit()
+    else:
+        return flask.redirect("/")
+    return flask.render_template("card.html", name=author.nickname, fc=author.followers)

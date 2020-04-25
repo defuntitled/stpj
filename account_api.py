@@ -5,7 +5,7 @@ from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
 from dbremote.user import User
 import os
-
+from main import app
 import flask
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
@@ -123,12 +123,11 @@ def register(par):
             user = User()
             user.nickname = form.username.data
             user.email = form.email.data
-            os.mkdir(f"data/{user.id}")
             user.hashed_password = generate_password_hash(form.password.data)
             if allowed_file(form.ava.file.filename):
                 file_name = secure_filename(form.ava.file.filename)
-                form.ava.file.save(f"data/{user.id}/{file_name}")
-                user.avatar = f"data/{user.id}/{file_name}"
+                form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+                user.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             session = create_session()
             session.add(user)
             print(type(form.username.data), type(form.email.data),
@@ -146,14 +145,14 @@ def register(par):
             author.email = form.email.data
             author.hashed_password = generate_password_hash(form.password.data)
             author.utype = True
+            if allowed_file(form.ava.file.filename):
+                file_name = secure_filename(form.ava.file.filename)
+                form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+                author.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             session = create_session()
             session.add(author)
             session.commit()
-            os.mkdir(f"data/{author.id}")
-            if allowed_file(form.ava.file.filename):
-                file_name = secure_filename(form.ava.file.filename)
-                form.ava.file.save(f"data/{author.id}/{file_name}")
-                author.avatar = f"data/{author.id}/{file_name}"
+
             return flask.redirect("/login/author")
         else:
             print(form.errors)
