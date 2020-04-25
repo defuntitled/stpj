@@ -1,8 +1,7 @@
 from dbremote import db_session
 from flask import Flask, render_template, redirect
-import flask
+import os
 import account_api
-import acman_api
 import stories_api
 import acman_api
 from flask_login import LoginManager, login_user, logout_user, current_user
@@ -27,6 +26,7 @@ def main():
     app.register_blueprint(account_api.blueprint)
     app.register_blueprint(stories_api.blueprint)
     app.register_blueprint(acman_api.blueprint)
+    port = int(os.environ.get("PORT", 5000))
     app.run(port=8080, host='127.0.0.1', debug=True)
     return 0
 

@@ -6,9 +6,6 @@ from dbremote.db_session import create_session, global_init
 from dbremote.user import User
 from dbremote.storys import Story, Comment
 import flask
-from colour import Color
-from PIL import ImageDraw, ImageFont, Image
-import math
 
 global_init("db/data.sqlite")
 
@@ -54,6 +51,7 @@ def story(sid):
         comment = Comment()
         comment.content = form.content.data
         comment.head = current_user.nickname
+        comment.story = story
         session.add(comment)
         session.commit()
     if like.validate_on_submit():
@@ -79,25 +77,6 @@ def story(sid):
     return flask.render_template("story.html", content=content, comments=comments)
 
 
-def generate_cover(sid, aid, grad):
-    img = Image.new("RGBA", (1920, 1080))
-    im = img.load()
-    if grad == 0:
-        col = Color((157, 0, 185))
-        colors = list(map(lambda x: x.rgb, col.range_to(Color("blue"), 1920)))
-    elif grad == 1:
-        col = Color((157, 0, 185))
-        colors = list(map(lambda x: x.rgb, col.range_to(Color("white"), 1920)))
-    elif grad == 2:
-        col = Color((157, 0, 185))
-        colors = list(map(lambda x: x.rgb, col.range_to(Color((74, 186, 87)), 1920)))
-    for i in range(im.size[0]):
-        for j in range(im.size[1]):
-            im[i, j] = colors[i]
-
-    im.save(f"data/{aid}/{sid}_cover.png")
-
-
 @blueprint.route("/post", methods=['GET', 'POST'])
 def post():
     if current_user.is_authenticated:
@@ -114,7 +93,7 @@ def post():
             elif checkbox2:
                 color = "/static/img/red.jpg"
             elif checkbox3:
-               color = "/static/img/green.jpg"
+                color = "/static/img/green.jpg"
             else:
                 color = "/static/img/white.jpg"
             print(text)
@@ -134,4 +113,3 @@ def post():
             return flask.redirect("/dashboard")
     else:
         return flask.redirect('/')
-

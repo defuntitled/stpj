@@ -25,6 +25,7 @@ class Comment(SqlAlchemyBase):
     __tablename__ = 'comments'
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
+    head = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     story_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("stories.id"))
     story = orm.relationship("Story", back_populates="commented")
