@@ -60,13 +60,18 @@ def story(sid):
         story.likes_count += 1
         session.commit()
     if sub.validate_on_submit():
-        user = session.query(User).filter(User.id == current_user.id, story.author in User.followed)
-        if user:
+        user = session.query(User).filter(User.id == current_user.id)
+        if story.author in user.followed:
             user.followed.remove(story.author)
+            session.commit()
+            author = session.query(User).filter(User.id == story.authror.id)
+            author.followers -= 1
             session.commit()
         else:
             user.followed.append(story.author)
             session.commit()
+            author = session.query(User).filter(User.id == story.authror.id)
+            author.followers += 1
     content = story.content
     comments = story.commented
 

@@ -62,7 +62,7 @@ def dashboard():
             author = session.query(User).filter(User.id == current_user.id)
             author.nickname = change.change.data
             session.commit()
-        author = session.query(User).filter(User.id == current_user.id)
+        author = session.query(User).filter(User.id == current_user.id).one()
         stories = author.stories
         followers_count = len(author.followers)
         return flask.render_template("dashboard.html", stories=stories, followers_count=followers_count)

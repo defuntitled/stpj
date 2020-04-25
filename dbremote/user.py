@@ -24,6 +24,7 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
+    followers = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     followed = orm.relationship(
         'User', secondary=follow_table,
         primaryjoin=(follow_table.c.follower_id == id),
@@ -32,7 +33,7 @@ class User(SqlAlchemyBase, UserMixin):
     utype = sqlalchemy.Column(sqlalchemy.Boolean,
                               default=False)
     stories = orm.relationship("Story", back_populates='author')
+    avatar = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
-
