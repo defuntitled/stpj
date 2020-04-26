@@ -31,7 +31,9 @@ def feed():
     stories_for_watching = []
     session = create_session()
     user = session.query(User).filter(User.id == current_user.id).one()
-
+    if flask.request.method == "POST" and flask.request.form.get('accept'):  # поисковой движок
+        results = session.query(Story).filter(Story.head.like(f'%{flask.request.get("search")}%'))
+        return flask.render_template("search_result.html", res=results)
     for i in user.followed:
         stories_for_watching += i
     if not stories_for_watching:
@@ -40,7 +42,7 @@ def feed():
                                  stories=stories_for_watching)
 
 
-@blueprint.route("/story/<int:sid>")  # конкретный пост
+@blueprint.route("/story/<int:sid>", methods=["GET", "POST"])  # конкретный пост
 def story(sid):
     session = create_session()
     story = session.query(Story).filter(Story.id == sid)
@@ -96,12 +98,6 @@ def post():
                 color = "/static/img/green.jpg"
             else:
                 color = "/static/img/white.jpg"
-            print(text)
-            print(post_name)
-            print(checkbox1)
-            print(checkbox2)
-            print(checkbox3)
-
             post = Story()
             post.content = text
             post.head = post_name
