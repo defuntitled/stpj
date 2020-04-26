@@ -29,4 +29,4 @@ class Comment(SqlAlchemyBase):
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     story_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("stories.id"))
     story = orm.relationship("Story", back_populates="commented")
-    head = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+

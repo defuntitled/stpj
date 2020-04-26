@@ -24,7 +24,7 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
-    followers = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    followers = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     followed = orm.relationship(
         'User', secondary=follow_table,
         primaryjoin=(follow_table.c.follower_id == id),

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_login import LoginManager, login_user, logout_user, current_user
 from dbremote.db_session import create_session, global_init
@@ -28,7 +28,12 @@ class DisFollowed(FlaskForm):
     disfollow = SubmitField("disfollow")
 
 
-@blueprint.route("/account_page",  methods=["GET", "POST"])
+class DStory(FlaskForm):
+    story = IntegerField("story", validators=[DataRequired()])
+    destroy = SubmitField("Delete story")
+
+
+@blueprint.route("/account_page", methods=["GET", "POST"])
 def cabinet():
     session = create_session()
     change_nick = ChangeNickname()
@@ -47,37 +52,13 @@ def cabinet():
     return flask.render_template("account.html", follows=follows)
 
 
-class DStory(FlaskForm):
-    story = StringField("story", validators=[DataRequired()])
-    destroy = SubmitField("del")
-
-
 @blueprint.route("/dashboard", methods=["GET", "POST"])  # панель управления постами и авторской статистикой
 def dashboard():
     session = create_session()
-    change = ChangeNickname()
-    dstory = DStory()
-    if current_user.utype:
-        session = create_session()
-        dstory = DStory()
-        if dstory.validate_on_submit():
-            story = session.query(Story).filter(Story.id == dstory.story.data)
-            session.delete(story)
-            session.commit()
-        change = ChangeNickname()
-        if change.validate_on_submit():
-            author = session.query(User).filter(User.id == current_user.id)
-            author.nickname = change.change.data
-            session.commit()
-        author = session.query(User).filter(User.id == current_user.id)
-
-        author.nickname = change.change.data
-        session.commit()
     author = session.query(User).filter(User.id == current_user.id).first()
-    print(author)
     stories = author.stories
     followers_count = author.followers
-    return flask.render_template("dashboard.html", stories=stories, followers=followers_count, change=ChangeNickname)
+    return flask.render_template("dashboard.html", stories=stories, followers=followers_count)
 
 
 @blueprint.route("/author/<int:aid>", methods=["GET", "POST"])  # "визитная карточка" автора

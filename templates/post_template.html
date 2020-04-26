@@ -37,6 +37,9 @@
             <h3 class="post-category">Your thoughts</h3>
 
             <form method="post">
+               {% if can_delete %}
+               <input type="submit" class="btn btn-block btn-primary" name='post-delete' value="Delete post" style="margin:5% 0 5% 0">
+               {% endif %}
                 <div class="row">
                     <div class="col-1">
                         <!-- Post stats -->

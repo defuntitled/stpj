@@ -6,9 +6,6 @@ from dbremote.db_session import create_session, global_init
 from dbremote.user import User
 from dbremote.storys import Story, Comment
 import flask
-from colour import Color
-from PIL import ImageDraw, ImageFont, Image
-import math
 
 global_init("db/data.sqlite")
 
@@ -31,12 +28,14 @@ class FollowForm(FlaskForm):
     subscribe = SubmitField("subscribe")
 
 
-@blueprint.route("/feed", methods=["GET", "POST"])
+@blueprint.route("/feed", methods=["GET", "POST"])  # общая лента с историями
 def feed():
     stories_for_watching = []
     session = create_session()
     user = session.query(User).filter(User.id == current_user.id).one()
-
+    if flask.request.method == "POST" and flask.request.form.get('accept'):  # поисковой движок
+        results = session.query(Story).filter(Story.head.like(f'%{flask.request.get("search")}%'))
+        return flask.render_template("search_result.html", res=results)
     for i in user.followed:
         stories_for_watching += i
     if not stories_for_watching:
@@ -45,7 +44,7 @@ def feed():
                                  stories=stories_for_watching)
 
 
-@blueprint.route("/story/<int:sid>", methods=['GET', 'POST'])
+@blueprint.route("/story/<int:sid>", methods=['GET', 'POST'])  # конкретный пост
 def story(sid):
     session = create_session()
     story = session.query(Story).filter(Story.id == sid).first()
@@ -54,46 +53,37 @@ def story(sid):
         comments = story.commented
         header = story.head
         name = session.query(User).filter(User.id == story.author_id).first()
-        return flask.render_template("post_template.html", content=content, comments=comments, header=header, name=name.nickname, likes=story.likes_count)
+        can_delete = (current_user.id == story.author_id)
+
+        return flask.render_template("post_template.html", content=content, comments=comments, header=header,
+                                     name=name.nickname, likes=story.likes_count, can_delete=can_delete)
     else:
-        content = story.content
-        comments = story.commented
-        header = story.head
-        name = session.query(User).filter(User.id == story.author_id).first()
-        req = flask.request.form
-        if req.get('editordata'):
-            print('ok')
-            comment = Comment()
-            comment.content = req.get('editordata')
-            comment.head = current_user.nickname
-            comment.story = story
-            session.commit()
-        if req.get('post-like'):
-            story.likes_count += 1
-            session.commit()
-        return flask.render_template('post_template.html', content=content, comments=comments, header=header, name=name.nickname, likes=story.likes_count)
+        if not current_user.utype:
+            content = story.content
+            comments = story.commented
+            header = story.head
+            name = session.query(User).filter(User.id == story.author_id).first()
+            req = flask.request.form
+            if req.get('editordata'):
+                print('ok')
+                comment = Comment()
+                comment.content = req.get('editordata')
+                comment.head = current_user.nickname
+                comment.story = story
+                session.commit()
+            if req.get('post-like'):
+                story.likes_count += 1
+                session.commit()
+        else:
+            req = flask.request.form
+            if req.get('post-delete'):
+                session.delete(story)
+                session.commit()
+                return flask.redirect('/dashboard')
+    return flask.render_template('post_template.html', content=content, comments=comments, header=header,
+                                 name=name.nickname, likes=story.likes_count)
 
-
-def generate_cover(sid, aid, grad):
-    img = Image.new("RGBA", (1920, 1080))
-    im = img.load()
-    if grad == 0:
-        col = Color((157, 0, 185))
-        colors = list(map(lambda x: x.rgb, col.range_to(Color("blue"), 1920)))
-    elif grad == 1:
-        col = Color((157, 0, 185))
-        colors = list(map(lambda x: x.rgb, col.range_to(Color("white"), 1920)))
-    elif grad == 2:
-        col = Color((157, 0, 185))
-        colors = list(map(lambda x: x.rgb, col.range_to(Color((74, 186, 87)), 1920)))
-    for i in range(im.size[0]):
-        for j in range(im.size[1]):
-            im[i, j] = colors[i]
-
-    im.save(f"data/{aid}/{sid}_cover.png")
-
-
-@blueprint.route("/post", methods=['GET', 'POST'])
+@blueprint.route("/post", methods=['GET', 'POST'])  # создание истории
 def post():
     if current_user.is_authenticated:
         if flask.request.method == 'GET':
@@ -112,12 +102,6 @@ def post():
                 color = "/static/img/green.jpg"
             else:
                 color = "/static/img/white.jpg"
-            print(text)
-            print(post_name)
-            print(checkbox1)
-            print(checkbox2)
-            print(checkbox3)
-
             post = Story()
             post.content = text
             post.head = post_name
