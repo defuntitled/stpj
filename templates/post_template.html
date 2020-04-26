@@ -11,7 +11,11 @@
                 <div class="author-info">
 
                     <!-- <img src="static/img/mariklolik.jpg" alt="LOL" class='author-img'> -->
+                    {% if current_user.utype %}
                     <span id='name'>Post by : {{ name }}</span>
+                    {% else %}
+                    <a href='/author/{{ author_href }}'id='name'>Post by : {{ name }}</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -37,15 +41,15 @@
             <h3 class="post-category">Your thoughts</h3>
 
             <form method="post">
-               {% if can_delete %}
-               <input type="submit" class="btn btn-block btn-primary" name='post-delete' value="Delete post" style="margin:5% 0 5% 0">
-               {% endif %}
+                {% if can_delete %}
+                <input type="submit" class="btn btn-block btn-primary" name='post-delete' value="Delete post" style="margin:5% 0 5% 0">
+                {% endif %}
                 <div class="row">
                     <div class="col-1">
                         <!-- Post stats -->
                         <div class="like">
                             <div class="checkbox-wrapper">
-                                <input type="checkbox" name="post-like"/>
+                                <input type="checkbox" name="post-like" />
                                 <div class="checkbox"><i class="fa fa-check" name='Like'></i></div>
                             </div>
                         </div>
@@ -57,7 +61,7 @@
                 <div class="row">
                     <div class="col" style="margin-top: 5%;">
                         <textarea name="editordata" id="summernote" style='min-height: 30%;'></textarea>
-                <input type="submit" class="btn btn-block btn-primary" value="I think so!" style="margin-top:4%;">
+                        <input type="submit" class="btn btn-block btn-primary" value="I think so!" style="margin-top:4%;">
                     </div>
                 </div>
 

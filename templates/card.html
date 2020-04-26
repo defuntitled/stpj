@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3 class="username" style="text-align: center;">{{ name }}</h3>
+<h3 class="username" style="text-align: center;">{{ fc }} subscribers</h3>
+<form method='post'>
+    <div class="row">
+        <div class="col-6" style="justify-content: center; margin: 0 auto;">
+            {% if not sub %}
+            <input type="submit" class="btn btn-block btn-primary" name='subscribe-button' value="Subscribe" style="margin:5% 0 5% 0; background-color:orangered;">
+            {% else %}
+            <input type="submit" class="btn btn-block btn-primary" name='subscribe-button' value="Unsubscribe" style="margin:5% 0 5% 0;background-color:darkgray;">
+            {% endif %}
+        </div>
+    </div>
+
+</form>
+
+
+{% endblock %}

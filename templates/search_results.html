@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="post-category">Search results</h3>
+
+        </div>
+    </div>
+
+    {% for story in res %}
+    <div class="row">
+        <div class="col">
+            <a href="/story/{{ story.id }}" class="story-link" style="font-family: 'Lexend Giga', sans-serif; font-size: 20px;">
+                <h2>
+                    {{ story.head }} - {{ story.likes_count }} <i class="fas fa-heart"></i></h2>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+
+
+</div>
+{% endblock %}

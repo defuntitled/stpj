@@ -11,6 +11,18 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <!--Carousel Wrapper-->
+<form method='post' style="justify-content: center; text-align: center; margin: 0 auto;align-items: center; flex-direction: column;">
+    <div class="row" id='search-top'>
+        <div class="col-4 my-auto" style="margin-top: 5%;">
+            <input type="text" name='search-input' style="border: 3px solid black; margin:0 auto;border-radius: 20px;padding:10px" placeholder="Search posts" required></div>
+    </div>
+    <div class="row" id='search-bottom'>
+        <div class="col-4 my-auto" >
+            <input type="submit" class="btn btn-block btn-primary" name='accept' value="Search" style="margin:5% 5% 5% 0; border-radius: 20px;">
+        </div>
+    </div>
+
+</form>
 
 <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel">
     <!--Indicators-->
@@ -27,6 +39,7 @@
             </div>
         </div>
         <!--/First slide-->
+
 
 
         {% for story in stories %}

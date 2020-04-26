@@ -33,11 +33,17 @@ def feed():
     stories_for_watching = []
     session = create_session()
     user = session.query(User).filter(User.id == current_user.id).one()
-    if flask.request.method == "POST" and flask.request.form.get('accept'):  # поисковой движок
-        results = session.query(Story).filter(Story.head.like(f'%{flask.request.get("search")}%'))
-        return flask.render_template("search_result.html", res=results)
-    for i in user.followed:
-        stories_for_watching += i
+    if flask.request.method == "POST" and flask.request.form.get('accept'):
+        search_key = flask.request.form.get("search-input")# поисковой движок
+        results = session.query(Story).filter(Story.head.like(f'%{search_key}%'))
+        if results:
+            return flask.render_template("search_results.html", res=results)
+        else:
+            results = session.query(Story).filter(Story.headlike(f"%{search_key[0].upper() + search_key[1:]}%"))
+        return flask.render_template("search_results.html", res=results)
+
+    for i in user.followed.all():
+        stories_for_watching += i.stories
     if not stories_for_watching:
         stories_for_watching = session.query(Story).all()
     return flask.render_template("feed.html",
@@ -54,9 +60,11 @@ def story(sid):
         header = story.head
         name = session.query(User).filter(User.id == story.author_id).first()
         can_delete = (current_user.id == story.author_id)
+        author_link = story.author_id
 
         return flask.render_template("post_template.html", content=content, comments=comments, header=header,
-                                     name=name.nickname, likes=story.likes_count, can_delete=can_delete)
+                                     name=name.nickname, likes=story.likes_count, can_delete=can_delete,
+                                     author_href=author_link)
     else:
         if not current_user.utype:
             content = story.content
@@ -74,14 +82,16 @@ def story(sid):
             if req.get('post-like'):
                 story.likes_count += 1
                 session.commit()
+            return flask.render_template('post_template.html', content=content, comments=comments, header=header,
+                                         name=name.nickname, likes=story.likes_count)
         else:
             req = flask.request.form
             if req.get('post-delete'):
                 session.delete(story)
                 session.commit()
                 return flask.redirect('/dashboard')
-    return flask.render_template('post_template.html', content=content, comments=comments, header=header,
-                                 name=name.nickname, likes=story.likes_count)
+    return flask.redirect(f'/story/{sid}')
+
 
 @blueprint.route("/post", methods=['GET', 'POST'])  # создание истории
 def post():

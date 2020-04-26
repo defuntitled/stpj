@@ -47,9 +47,10 @@ def cabinet():
         author = session.query(User).filter(User.id == disf.author.data)
         user.followed.remove(author)
         session.commit()
-    user = session.query(User).filter(User.id == current_user.id)
+    user = session.query(User).filter(User.id == current_user.id).first()
     follows = user.followed
-    return flask.render_template("account.html", follows=follows)
+    name = user.nickname
+    return flask.render_template("account.html", follows=follows, name=name)
 
 
 @blueprint.route("/dashboard", methods=["GET", "POST"])  # панель управления постами и авторской статистикой
@@ -64,21 +65,30 @@ def dashboard():
 @blueprint.route("/author/<int:aid>", methods=["GET", "POST"])  # "визитная карточка" автора
 def card(aid):
     session = create_session()
-    author = session.query(User).filter(User.id == aid)
-    if current_user.is_authenticated:
-        sub = FollowForm()
-        if sub.validate_on_submit():
-            user = session.query(User).filter(User.id == current_user.id)
-            if author in user.followed:
-                user.followed.remove(author)
-                session.commit()
-                author.followers -= 1
-                session.commit()
-            else:
-                user.followed.append(author)
-                session.commit()
-                author.followers += 1
-                session.commit()
+    author = session.query(User).filter(User.id == aid).first()
+    user = session.query(User).filter(User.id == current_user.id).first()
+    if flask.request.method == 'GET':
+        if not current_user.is_authenticated:
+            return flask.redirect("/")
+        subscribed = author in user.followed
+        return flask.render_template("card.html", name=author.nickname, fc=author.followers, sub=subscribed)
     else:
-        return flask.redirect("/")
-    return flask.render_template("card.html", name=author.nickname, fc=author.followers)
+        req = flask.request.form
+        if req.get('subscribe-button'):
+            subscribed = author in user.followed
+            req = flask.request.form
+            if req.get('subscribe-button'):
+
+                if author in user.followed:
+                    user.followed.remove(author)
+                    session.commit()
+                    author.followers -= 1
+                    session.commit()
+                else:
+                    user.followed.append(author)
+                    session.commit()
+                    author.followers += 1
+                    session.commit()
+        return flask.redirect('/feed')
+
+        return flask.render_template("card.html", name=author.nickname, fc=author.followers, sub=subscribed)
