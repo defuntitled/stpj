@@ -18,6 +18,7 @@ blueprint = flask.Blueprint('news_api', __name__,
 ALLOWED_EXTENSIONS = {'png', 'jpg'}
 
 
+# обработчики регистрации и входа
 class LoginForm(FlaskForm):
     email = StringField('ЭЛЕКТРОМЫЛО', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

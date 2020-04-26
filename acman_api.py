@@ -28,7 +28,7 @@ class DisFollowed(FlaskForm):
     disfollow = SubmitField("disfollow")
 
 
-@blueprint.route("/account_page")
+@blueprint.route("/account_page",  methods=["GET", "POST"])
 def cabinet():
     session = create_session()
     change_nick = ChangeNickname()
@@ -52,7 +52,7 @@ class DStory(FlaskForm):
     destroy = SubmitField("del")
 
 
-@blueprint.route("/dashboard")
+@blueprint.route("/dashboard", methods=["GET", "POST"])  # панель управления постами и авторской статистикой
 def dashboard():
     session = create_session()
     change = ChangeNickname()
@@ -80,7 +80,7 @@ def dashboard():
     return flask.render_template("dashboard.html", stories=stories, followers=followers_count, change=ChangeNickname)
 
 
-@blueprint.route("/author/<int:aid>")
+@blueprint.route("/author/<int:aid>", methods=["GET", "POST"])  # "визитная карточка" автора
 def card(aid):
     session = create_session()
     author = session.query(User).filter(User.id == aid)
