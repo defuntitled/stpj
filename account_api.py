@@ -124,10 +124,10 @@ def register(par):
             user.nickname = form.username.data
             user.email = form.email.data
             user.hashed_password = generate_password_hash(form.password.data)
-            if allowed_file(form.ava.file.filename):
-                file_name = secure_filename(form.ava.file.filename)
-                form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
-                user.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+            #if allowed_file(form.ava.file.filename):
+            #    file_name = secure_filename(form.ava.file.filename)
+            #    form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+            #    user.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             session = create_session()
             session.add(user)
             print(type(form.username.data), type(form.email.data),
@@ -145,10 +145,10 @@ def register(par):
             author.email = form.email.data
             author.hashed_password = generate_password_hash(form.password.data)
             author.utype = True
-            if allowed_file(form.ava.file.filename):
-                file_name = secure_filename(form.ava.file.filename)
-                form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
-                author.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+            #if allowed_file(form.ava.file.filename):
+            #    file_name = secure_filename(form.ava.file.filename)
+            #    form.ava.file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+            #    author.avatar = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             session = create_session()
             session.add(author)
             session.commit()

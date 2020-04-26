@@ -55,6 +55,8 @@ class DStory(FlaskForm):
 @blueprint.route("/dashboard")
 def dashboard():
     session = create_session()
+    change = ChangeNickname()
+    dstory = DStory()
     if current_user.utype:
         session = create_session()
         dstory = DStory()
@@ -75,7 +77,7 @@ def dashboard():
     print(author)
     stories = author.stories
     followers_count = author.followers
-    return flask.render_template("dashboard.html", stories=stories, followers=followers_count)
+    return flask.render_template("dashboard.html", stories=stories, followers=followers_count, change=ChangeNickname)
 
 
 @blueprint.route("/author/<int:aid>")

@@ -4,11 +4,23 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h3 class="post-category">Your Dashboard here {{ current_user.nickname }} </h3>{{ followers_count }}
+            <h3 class="post-category">Your Dashboard here {{ current_user.nickname }} </h3>
+            {{ change.change }}
+            <h3 class="post-category">You now have {{ followers }} followers</h3>
             <a href='/post' class="btn btn-block btn-primary" style="margin-top: 5%;"> New post!</a>
+        </div>
+    </div>
+
+    <p style="margin: 6% 0 4% 0; font-family: 'Lexend Giga', sans-serif; font-size: 20px;">Posts</p>
+    {% for story in stories %}
+    <div class="row">
+        <div class="col">
+           <a href="/story/{{ story.id }}" class="story-link" style="font-family: 'Lexend Giga', sans-serif; font-size: 20px;"><h2>{{ story.head }} - {{ story.likes_count }} <i class="fas fa-heart" ></i></h2></a>
+
 
         </div>
-
     </div>
+    {% endfor %}
+
 </div>
 {% endblock %}

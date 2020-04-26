@@ -27,7 +27,7 @@
     <div style="display: flex;justify-content: space-between;margin-top:2%;justify-content: center;align-items: center;background-color:azure;">
         <div class="col-xs-3 col-sm-5 col-lg-4"><a href="/logout" class="btn btn-block btn-primary" style="float:left;">Logout</a></div>
         <div class='col'>
-            {% if not current_user.utype %}
+            {% if current_user.utype %}
             <h3 class="post-category" style='float:right; margin-right: 5%;'>Hello <a class='username' href='/dashboard'>{{ current_user.nickname }}!</a></h3>
 
             {% else %}

@@ -568,6 +568,11 @@ form input {
     z-index: 2;
 }
 
+a i:hover{
+    transition: 0.8s;
+    color: red;
+}
+
 @keyframes pulse {
     0% {
         box-shadow: 0 0 0 0px #29b6f6;
@@ -590,8 +595,8 @@ form input {
     }
 
     .carousel-caption h2 {
-        color: red;
         margin-bottom: 5%;
+        font-size: 20px;
     }
 }
 
@@ -607,7 +612,8 @@ form input {
     }
 
     .carousel-caption h2 {
-        color: red;
         margin-bottom: 5%;
+        font-size: 20px;
+
     }
 }
